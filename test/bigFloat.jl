@@ -27,12 +27,12 @@ end
     end
 end
 
-@testset "precision" begin
+@testset "Base.precision" begin
     @test precision(MiniBf()) == 0
     @test precision(MiniBf(UInt32(1))) == 1
 end
 
-@testset "exponent" begin
+@testset "Base.exponent" begin
     @test exponent(MiniBf()) == 0
     @test exponent(MiniBf(UInt32(1))) == 0
 end

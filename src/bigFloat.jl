@@ -67,7 +67,7 @@ function to_string(bf::MiniBf, digits=0) end
 function to_string_sci(bf::MiniBf, digits=0) end
 
 """
-    precision(x::MiniBf)
+    Base.precision(x::MiniBf)
 
 Returns the precision of the number in words.
 
@@ -78,7 +78,7 @@ function Base.precision(x::MiniBf)
 end
 
 """
-    exponent(x::MiniBf)
+    Base.exponent(x::MiniBf)
     
 Returns the exponent of the number in words.
 
