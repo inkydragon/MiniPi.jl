@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: CC0-1.0
 /* Tools.h
  *
  * Author           : Alexander J. Yee

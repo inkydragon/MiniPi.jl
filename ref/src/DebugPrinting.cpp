@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: CC0-1.0
 /* DebugPrinting.cpp
  *
  * Author           : Alexander J. Yee
