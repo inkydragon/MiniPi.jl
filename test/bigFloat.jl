@@ -1,4 +1,6 @@
 import MiniPi.MiniBf
+import MiniPi:
+    precision
 
 @testset "bigFloat.jl" begin
 
@@ -23,4 +25,9 @@ end
             end
         end
     end
+end
+
+@testset "precision" begin
+    @test precision(MiniBf()) == 0
+    @test precision(MiniBf(UInt32(1))) == 1
 end

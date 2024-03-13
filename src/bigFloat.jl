@@ -66,7 +66,17 @@ Base.:(==)(x::MiniBf, y::MiniBf) =
 function to_string(bf::MiniBf, digits=0) end
 function to_string_sci(bf::MiniBf, digits=0) end
 
-function get_precision(bf::MiniBf) end
+"""
+    precision(x::MiniBf)
+
+Returns the precision of the number in words.
+
+Note that each word is 9 decimal digits.
+"""
+function Base.precision(x::MiniBf)
+    x.len
+end
+
 function get_exponent(bf::MiniBf) end
 function word_at(mag::UInt64) end
 
