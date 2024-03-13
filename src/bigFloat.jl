@@ -88,7 +88,28 @@ function Base.exponent(x::MiniBf)
     x.exp
 end
 
-function word_at(mag::UInt64) end
+"""
+    word_at(x::MiniBf, mag::Int64)
+
+Returns the word at the mag'th digit place.
+
+This is useful for additions where you need to access a specific "digit place"
+of the operand without having to worry if it's out-of-bounds.
+
+This function is mathematically equal to:
+```
+(return value) = floor(this * (10^9)^-mag) % 10^9
+```
+
+TODO: use getindex
+"""
+function word_at(x::MiniBf, mag::Int64)
+    if mag < x.exp || mag >= (x.exp+x.len)
+        return 0
+    end
+    
+    return x.tab[Int(mag - exp) + 1]
+end
 
 function negate(bf::MiniBf) end
 function mul(bf::MiniBf) end
