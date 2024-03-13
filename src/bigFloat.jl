@@ -77,7 +77,17 @@ function Base.precision(x::MiniBf)
     x.len
 end
 
-function get_exponent(bf::MiniBf) end
+"""
+    exponent(x::MiniBf)
+    
+Returns the exponent of the number in words.
+
+Note that each word is 9 decimal digits.
+"""
+function Base.exponent(x::MiniBf)
+    x.exp
+end
+
 function word_at(mag::UInt64) end
 
 function negate(bf::MiniBf) end

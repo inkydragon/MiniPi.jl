@@ -1,6 +1,6 @@
 import MiniPi.MiniBf
 import MiniPi:
-    precision
+    precision, exponent
 
 @testset "bigFloat.jl" begin
 
@@ -30,4 +30,9 @@ end
 @testset "precision" begin
     @test precision(MiniBf()) == 0
     @test precision(MiniBf(UInt32(1))) == 1
+end
+
+@testset "exponent" begin
+    @test exponent(MiniBf()) == 0
+    @test exponent(MiniBf(UInt32(1))) == 0
 end
