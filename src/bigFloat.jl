@@ -1,6 +1,8 @@
 
 "Precision increase step."
 const EXTRA_PRECISION = UInt64(2)
+"Word size = 10^9"
+const WORD_SIZE = 1_000_000_000
 
 """
 The Big Floating-point object.
@@ -162,10 +164,49 @@ function negate!(x::MiniBf)
     x
 end
 
-function mul(x::MiniBf, y::UInt32) end
+"""
+    mul(x::MiniBf, y::UInt32)
+
+Multiply by a 32-bit unsigned integer.
+"""
+function mul(x::MiniBf, y::UInt32)
+    z = MiniBf()
+    if iszero(x.len) || iszero(y)
+        # 0
+        return z
+    end
+    
+    # Compute basic fields.
+    z.sign = x.sign
+    z.exp  = x.exp
+    z.len  = x.len
+    
+    # Allocate mantissa
+    z.tab = zeros(UInt32, z.len + 1)
+    
+    carry = zero(UInt64)
+    for c in one(UInt64):(x.len)
+        # Multiply and add to carry
+        carry += x.tab[c] * y
+        # Store bottom 9 digits
+        z.tab[c] = carry % WORD_SIZE
+        # Shift down the carry
+        carry /= WORD_SIZE
+    end
+    
+    # Carry out
+    if carry != 0
+        z.len += 1
+        z.tab[z.len] = UInt32(carry)
+    end
+
+    z
+end
+mul(x::MiniBf, y::Unsigned) = mul(x, UInt32(y))
+
 function add(x::MiniBf, y::UInt32, p=0) end
 function sub(x::MiniBf, y::UInt32, p=0) end
-function mul(x::MiniBf, y::UInt32, p=0) end
+function mul(x::MiniBf, y::UInt32, p) end
 function rcp(x::MiniBf, p) end
 function div(x::MiniBf, y::UInt32, p) end
 

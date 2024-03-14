@@ -3,7 +3,7 @@ import MiniPi:
     precision, exponent,
     ucmp,
     # Arithmetic
-    negate!
+    negate!, mul
 
 @testset "bigFloat.jl" begin
 
@@ -142,5 +142,33 @@ end
     ]
     for x in test_x
         @test negate!(MiniBf(x)) == MiniBf(-x)
+    end
+end
+
+@testset "mul" begin
+    @test mul(MiniBf(0), 0x0) == MiniBf()
+    @test mul(MiniBf(1), 0x0) == MiniBf()
+
+    function test_commutative(x, y)
+        @assert x >= 0
+        @test mul(MiniBf(x), y) == mul(MiniBf(y), UInt32(x))
+        @test mul(MiniBf(-x), y) == mul(MiniBf(-y), UInt32(x))
+    end
+    test_x = Int64[
+        0:10...,
+        rand(UInt8, 10)...,
+        rand(UInt16, 10)...,
+        rand(UInt32, 10)...,
+    ]
+    for x in test_x
+        u32_x = UInt32(x)
+        @test mul(MiniBf(x), 0x0) == MiniBf(x)
+        @test mul(MiniBf(x), 0x1) == MiniBf(x)
+        @test mul(MiniBf(-x), 0x0) == MiniBf(-x)
+        @test mul(MiniBf(-x), 0x1) == MiniBf(-x)
+        
+        test_commutative(x, 0x0)
+        test_commutative(x, 0x1)
+        test_commutative(x, 0x2)
     end
 end
