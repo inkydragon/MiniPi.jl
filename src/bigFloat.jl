@@ -2,7 +2,7 @@
 "Precision increase step."
 const EXTRA_PRECISION = UInt64(2)
 "Word size = 10^9"
-const WORD_SIZE = 1_000_000_000
+const WORD_SIZE = UInt32(1_000_000_000)
 
 """
 The Big Floating-point object.
@@ -191,7 +191,7 @@ function mul(x::MiniBf, y::UInt32)
         # Store bottom 9 digits
         z.tab[c] = carry % WORD_SIZE
         # Shift down the carry
-        carry /= WORD_SIZE
+        carry = div(carry, WORD_SIZE)
     end
     
     # Carry out
@@ -208,7 +208,7 @@ function add(x::MiniBf, y::UInt32, p=0) end
 function sub(x::MiniBf, y::UInt32, p=0) end
 function mul(x::MiniBf, y::UInt32, p) end
 function rcp(x::MiniBf, p) end
-function div(x::MiniBf, y::UInt32, p) end
+# function div(x::MiniBf, y::UInt32, p) end
 
 
 function to_string_trimmed(x::MiniBf, digits) end
