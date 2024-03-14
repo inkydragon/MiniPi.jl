@@ -4,7 +4,7 @@ import MiniPi:
     precision, exponent,
     ucmp,
     # Arithmetic
-    negate!, mul
+    negate!, mul, uadd
 
 @testset "bigFloat.jl" begin
 
@@ -181,4 +181,41 @@ end
         test_commutative(x, 0x2)
         test_commutative(x, WORD_MAX)
     end
+end
+
+@testset "uadd" begin
+    @test uadd(MiniBf(0), MiniBf(0)) == MiniBf(0)
+    @test uadd(MiniBf(1), MiniBf(0)) == MiniBf(1)
+
+    function test_uadd_commutative(x, y, p=zero(UInt64))
+        @assert x >= 0
+        u32_x = UInt32(x)
+        u32_y = UInt32(y)
+
+        baseline_sum = uadd(MiniBf(x), u32_y, p)
+        @test baseline_sum == uadd(MiniBf(y), u32_x, p)
+        @test baseline_sum == uadd(MiniBf(-x), u32_y, p)
+        @test baseline_sum == uadd(MiniBf(-y), u32_x, p)
+    end
+
+    test_x = Int64[
+        0:10...,
+        rand(UInt8, 10)...,
+        rand(UInt16, 10)...,
+        rand(1:WORD_MAX, 10)...,
+    ]
+    # for i64_x in test_x
+    #     x = MiniBf(i64_x)
+    #     neg_x = MiniBf(-i64_x)
+    #     u32_x = UInt32(i64_x)
+
+    #     @test uadd(x, 0x0) == x
+    #     @test uadd(neg_x, 0x0) == x
+
+    #     test_uadd_commutative(x, 0x0)
+    #     test_uadd_commutative(x, 0x1)
+    #     test_uadd_commutative(x, 0x2)
+    #     test_uadd_commutative(x, u32_x)
+    #     test_uadd_commutative(x, WORD_MAX)
+    # end
 end

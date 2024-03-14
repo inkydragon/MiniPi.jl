@@ -245,7 +245,68 @@ function rcp(x::MiniBf, p) end
 
 function to_string_trimmed(x::MiniBf, digits) end
 function ucmp(x::MiniBf, y::UInt32) end
-function uadd(x::MiniBf, y::UInt32, p) end
+
+"""
+    uadd(x::MiniBf, y::MiniBf, p=zero(UInt64))
+
+Perform addition ignoring the sign of the two operands.
+"""
+function uadd(x::MiniBf, y::MiniBf, p=zero(UInt64))
+    # Magnitude
+    magA = x.exp + Int64(x.len)
+    magB = y.exp + Int64(y.len)
+    top = max(magA, magB)
+    bot = min(x.exp, y.exp)
+
+    # Target length
+    TL = top - bot
+
+    if p == 0
+        # Default value. No truncation.
+        p = TL
+    else
+        # Increase precision
+        p += EXTRA_PRECISION
+    end
+
+    # Perform precision truncation.
+    if TL > p
+        bot = top - p
+        TL = p
+    end
+
+    # Compute basic fields.
+    z = MiniBf()
+    z.sign = x.sign
+    z.exp = bot
+    z.len = TL
+
+    # Allocate mantissa
+    z.tab = zeros(UInt32, z.len + 1)
+
+    # Add
+    carry = 0
+    c = one(UInt64)
+    for bot in bot:(top-1)
+        word = word_at(x, bot) + word_at(y, bot) + carry
+        carry = 0
+        if word >= WORD_SIZE
+            word -= WORD_SIZE
+            carry = 1
+        end
+        z.tab[c] = word
+        c += 1
+    end
+
+    # Carry out
+    if carry != 0
+        z.len += 1
+        z.tab[z.len] = 1
+    end
+
+    return z
+end
+
 function usub(x::MiniBf, y::UInt32, p) end
 
 function invsqrt(x::MiniBf, y::UInt32, p) end
