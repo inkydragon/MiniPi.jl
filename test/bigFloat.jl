@@ -1,6 +1,7 @@
 import MiniPi.MiniBf
 import MiniPi:
-    precision, exponent
+    precision, exponent,
+    ucmp
 
 @testset "bigFloat.jl" begin
 
@@ -67,4 +68,63 @@ end
 @testset "Base.exponent" begin
     @test exponent(MiniBf()) == 0
     @test exponent(MiniBf(UInt32(1))) == 0
+end
+
+
+function ucmp_gt(x, y)
+    @test 1 == ucmp(MiniBf(x), MiniBf(y))
+    @test 1 == ucmp(MiniBf(x), MiniBf(-y))
+    @test 1 == ucmp(MiniBf(-x), MiniBf(y))
+    @test 1 == ucmp(MiniBf(-x), MiniBf(-y))
+end
+
+function ucmp_eq(x, y)
+    @test 0 == ucmp(MiniBf(x), MiniBf(y))
+    @test 0 == ucmp(MiniBf(x), MiniBf(-y))
+    @test 0 == ucmp(MiniBf(-x), MiniBf(y))
+    @test 0 == ucmp(MiniBf(-x), MiniBf(-y))
+end
+
+function ucmp_lt(x, y)
+    @test -1 == ucmp(MiniBf(x), MiniBf(y))
+    @test -1 == ucmp(MiniBf(x), MiniBf(-y))
+    @test -1 == ucmp(MiniBf(-x), MiniBf(y))
+    @test -1 == ucmp(MiniBf(-x), MiniBf(-y))
+end
+
+@testset "ucmp" begin
+    # gt >
+    @test 1 == ucmp(MiniBf(1), MiniBf(0))
+    ucmp_gt(1, 0)
+
+    # eq ==
+    @test 0 == ucmp(MiniBf(), MiniBf())
+    @test 0 == ucmp(MiniBf(0), MiniBf())
+    @test 0 == ucmp(MiniBf(1), MiniBf(1))
+    ucmp_eq(0, 0)
+    ucmp_eq(1, 1)
+
+    # lt <
+    @test -1 == ucmp(MiniBf(), MiniBf(1))
+    ucmp_lt(0, 1)
+
+    test_x = Int64[
+        rand(UInt8, 10)...,
+        rand(UInt16, 10)...,
+        rand(UInt32, 10)...,
+    ]
+    for x in test_x
+        # gt >
+        ucmp_gt(x, x-1)
+        ucmp_gt(x+1, x)
+
+        # eq ==
+        ucmp_eq(x-1, x-1)
+        ucmp_eq(x, x)
+        ucmp_eq(x+1, x+1)
+
+        # lt <
+        ucmp_lt(x-1, x)
+        ucmp_lt(x, x+1)
+    end
 end

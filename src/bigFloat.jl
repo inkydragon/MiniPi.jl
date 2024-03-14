@@ -112,6 +112,39 @@ function word_at(x::MiniBf, mag::Int64)
     return x.tab[Int(mag - exp) + 1]
 end
 
+"""
+    ucmp(x::MiniBf, y::MiniBf)
+
+Compare function that ignores the sign.
+
+This is needed to determine which direction subtractions will go.
+"""
+function ucmp(x::MiniBf, y::MiniBf)
+    magA = x.exp + x.len
+    magB = y.exp + y.len
+    
+    if magA > magB
+        return 1
+    elseif magA < magB
+        return -1
+    end
+
+    mag = Int(magA)
+    while mag >= x.exp || mag >= y.exp
+        wordA = word_at(x, mag)
+        wordB = word_at(y, mag)
+        if wordA < wordB
+            return -1
+        elseif wordA > wordB
+            return 1
+        end
+
+        mag -= 1
+    end
+    
+    return 0
+end
+
 function negate(bf::MiniBf) end
 function mul(bf::MiniBf) end
 function add(bf::MiniBf, x::UInt32, p=0) end
@@ -122,7 +155,7 @@ function div(bf::MiniBf, x::UInt32, p) end
 
 
 function to_string_trimmed(bf::MiniBf, digits) end
-function ucmp(bf::MiniBf, x::UInt32) end
+function ucmp(bf::MiniBf, y::UInt32) end
 function uadd(bf::MiniBf, x::UInt32, p) end
 function usub(bf::MiniBf, x::UInt32, p) end
 
