@@ -162,17 +162,17 @@ function negate!(x::MiniBf)
     x
 end
 
-function mul(bf::MiniBf) end
-function add(bf::MiniBf, x::UInt32, p=0) end
-function sub(bf::MiniBf, x::UInt32, p=0) end
-function mul(bf::MiniBf, x::UInt32, p=0) end
-function rcp(bf::MiniBf, p) end
-function div(bf::MiniBf, x::UInt32, p) end
+function mul(x::MiniBf, y::UInt32) end
+function add(x::MiniBf, y::UInt32, p=0) end
+function sub(x::MiniBf, y::UInt32, p=0) end
+function mul(x::MiniBf, y::UInt32, p=0) end
+function rcp(x::MiniBf, p) end
+function div(x::MiniBf, y::UInt32, p) end
 
 
-function to_string_trimmed(bf::MiniBf, digits) end
-function ucmp(bf::MiniBf, y::UInt32) end
-function uadd(bf::MiniBf, x::UInt32, p) end
-function usub(bf::MiniBf, x::UInt32, p) end
+function to_string_trimmed(x::MiniBf, digits) end
+function ucmp(x::MiniBf, y::UInt32) end
+function uadd(x::MiniBf, y::UInt32, p) end
+function usub(x::MiniBf, y::UInt32, p) end
 
-function invsqrt(bf::MiniBf, x::UInt32, p) end
+function invsqrt(x::MiniBf, y::UInt32, p) end
