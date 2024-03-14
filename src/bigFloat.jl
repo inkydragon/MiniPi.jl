@@ -55,6 +55,7 @@ function MiniBf(x::UInt32, sign=true)
     @assert length(bf.tab) == bf.len
     bf
 end
+MiniBf(x::Integer) = MiniBf(UInt32(Base.Checked.checked_abs(x)), !signbit(x))
 
 Base.:(==)(x::MiniBf, y::MiniBf) =
     x.sign == y.sign &&
