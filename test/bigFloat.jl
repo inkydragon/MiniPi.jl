@@ -1,7 +1,9 @@
 import MiniPi.MiniBf
 import MiniPi:
     precision, exponent,
-    ucmp
+    ucmp,
+    # Arithmetic
+    negate!
 
 @testset "bigFloat.jl" begin
 
@@ -126,5 +128,19 @@ end
         # lt <
         ucmp_lt(x-1, x)
         ucmp_lt(x, x+1)
+    end
+end
+
+@testset "negate!" begin
+    @test negate!(MiniBf()) == MiniBf()
+    @test negate!(MiniBf(1)) == MiniBf(-1)
+    
+    test_x = Int64[
+        rand(UInt8, 10)...,
+        rand(UInt16, 10)...,
+        rand(UInt32, 10)...,
+    ]
+    for x in test_x
+        @test negate!(MiniBf(x)) == MiniBf(-x)
     end
 end

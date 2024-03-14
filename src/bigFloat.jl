@@ -145,7 +145,23 @@ function ucmp(x::MiniBf, y::MiniBf)
     return 0
 end
 
-function negate(bf::MiniBf) end
+
+
+#= Arithmetic =#
+
+"""
+    negate!(x::MiniBf)
+
+Negate this number.
+"""
+function negate!(x::MiniBf)
+    if x.len != 0
+        x.sign = !x.sign
+    end
+
+    x
+end
+
 function mul(bf::MiniBf) end
 function add(bf::MiniBf, x::UInt32, p=0) end
 function sub(bf::MiniBf, x::UInt32, p=0) end
