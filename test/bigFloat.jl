@@ -162,9 +162,9 @@ end
     ]
     for x in test_x
         u32_x = UInt32(x)
-        @test mul(MiniBf(x), 0x0) == MiniBf(x)
+        @test mul(MiniBf(x), 0x0) == MiniBf(0)
         @test mul(MiniBf(x), 0x1) == MiniBf(x)
-        @test mul(MiniBf(-x), 0x0) == MiniBf(-x)
+        @test mul(MiniBf(-x), 0x0) == MiniBf(0)
         @test mul(MiniBf(-x), 0x1) == MiniBf(-x)
         
         test_commutative(x, 0x0)
