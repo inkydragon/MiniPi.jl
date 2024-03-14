@@ -30,6 +30,8 @@ end
     @test MiniBf(typemin(Int32)+1) == MiniBf(UInt32(2147483648-1), false)
     @test MiniBf(Int64(typemax(UInt32))) == MiniBf(UInt32(4294967295))
     @test MiniBf(-Int64(typemax(UInt32))) == MiniBf(UInt32(4294967295), false)
+    @test MiniBf(Int128(typemax(UInt32))) == MiniBf(UInt32(4294967295))
+    @test MiniBf(-Int128(typemax(UInt32))) == MiniBf(UInt32(4294967295), false)
     @test MiniBf(BigInt(typemax(UInt32))) == MiniBf(UInt32(4294967295))
     @test MiniBf(-BigInt(typemax(UInt32))) == MiniBf(UInt32(4294967295), false)
 
