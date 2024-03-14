@@ -3,6 +3,8 @@
 const EXTRA_PRECISION = UInt64(2)
 "Word size = 10^9"
 const WORD_SIZE = UInt32(1_000_000_000)
+"Word max"
+const WORD_MAX = UInt32(1_000_000_000 - 1)
 
 function check_word_size(x)
     if x >= WORD_SIZE
