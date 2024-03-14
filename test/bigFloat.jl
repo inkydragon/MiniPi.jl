@@ -39,6 +39,12 @@ end
 
     for x in [zero(UInt32), rand(UInt32, 9)...],
         sign in [true, false]
+        if iszero(x)
+            @test MiniBf(x) == MiniBf(true, zero(Int64), zero(UInt64), UInt32[])
+            @test MiniBf(x, sign) == MiniBf(true, zero(Int64), zero(UInt64), UInt32[])
+            continue
+        end
+
         # MiniBf(::UInt32)
         @testset "MiniBf($x)" begin
             @test MiniBf(x) == MiniBf(true, zero(Int64), one(UInt64), UInt32[x])
@@ -46,11 +52,7 @@ end
 
         # MiniBf(::UInt32, ::Bool)
         @testset "MiniBf($x, $sign)" begin
-            if iszero(x)
-                @test MiniBf(x, sign) == MiniBf(true, zero(Int64), zero(UInt64), UInt32[])
-            else
-                @test MiniBf(x, sign) == MiniBf(sign, zero(Int64), one(UInt64), UInt32[x])
-            end
+            @test MiniBf(x, sign) == MiniBf(sign, zero(Int64), one(UInt64), UInt32[x])
         end
     end
 end
