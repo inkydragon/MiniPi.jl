@@ -152,14 +152,18 @@ end
 
     function test_commutative(x, y)
         @assert x >= 0
-        @test mul(MiniBf(x), y) == mul(MiniBf(y), UInt32(x))
-        @test mul(MiniBf(-Int(x)), y) == mul(MiniBf(-Int(y)), UInt32(x))
+        u32_x = UInt32(x)
+        u32_y = UInt32(y)
+        @test mul(MiniBf(x), u32_y) == mul(MiniBf(y), u32_x)
+        @test mul(MiniBf(-Int(x)), u32_y) == mul(MiniBf(-Int(y)), u32_x)
     end
+
+    test_commutative(WORD_SIZE, WORD_SIZE)
     test_x = Int64[
         0:10...,
         rand(UInt8, 10)...,
         rand(UInt16, 10)...,
-        rand(1:WORD_SIZE, 10)...,
+        rand(1:(WORD_SIZE-1), 10)...,
     ]
     for x in test_x
         u32_x = UInt32(x)
@@ -171,5 +175,6 @@ end
         test_commutative(x, 0x0)
         test_commutative(x, 0x1)
         test_commutative(x, 0x2)
+        test_commutative(x, WORD_SIZE)
     end
 end
