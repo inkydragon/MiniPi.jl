@@ -4,6 +4,12 @@ const EXTRA_PRECISION = UInt64(2)
 "Word size = 10^9"
 const WORD_SIZE = UInt32(1_000_000_000)
 
+function check_word_size(x)
+    if x >= WORD_SIZE
+        throw(DomainError("x too large. Only impl MiniBf() for x < WORD_SIZE($WORD_SIZE)"))
+    end
+end
+
 """
 The Big Floating-point object.
 It represents an arbitrary precision floating-point number.
@@ -50,6 +56,7 @@ function MiniBf(x::UInt32, sign=true)
     if iszero(x)
         bf.len = 0
     else
+        check_word_size(x)
         bf.sign = sign
         bf.tab = UInt32[x]
     end
@@ -60,9 +67,7 @@ end
 
 function MiniBf(x::Integer)
     abs_x = Base.Checked.checked_abs(x)
-    if x > WORD_SIZE
-        throw(DomainError("x too large. Only impl MiniBf() for x < WORD_SIZE($WORD_SIZE)"))
-    end
+    check_word_size(x)
 
     MiniBf(UInt32(abs_x), !signbit(x))
 end
