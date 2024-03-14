@@ -108,8 +108,8 @@ function word_at(x::MiniBf, mag::Int64)
     if mag < x.exp || mag >= (x.exp+x.len)
         return 0
     end
-    
-    return x.tab[Int(mag - exp) + 1]
+
+    return x.tab[Int(mag - x.exp) + 1]
 end
 
 """
