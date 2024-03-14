@@ -11,11 +11,13 @@ end
     @test MiniBf <: AbstractFloat
     @test MiniBf() isa AbstractFloat
 
+    # MiniBf()
     @test MiniBf() == MiniBf()
+    # MiniBf(::MiniBf)
     @test MiniBf(MiniBf()) == MiniBf()
     @test MiniBf() == MiniBf(true, 0, 0x0000000000000000, UInt32[])
     
-    # Integer input
+    # MiniBf(::Integer)
     # Bool
     @test MiniBf(true) == MiniBf(UInt32(1))
     @test MiniBf(false) == MiniBf(UInt32(0))
@@ -37,6 +39,12 @@ end
 
     for x in [zero(UInt32), rand(UInt32, 9)...],
         sign in [true, false]
+        # MiniBf(::UInt32)
+        @testset "MiniBf($x)" begin
+            @test MiniBf(x) == MiniBf(true, zero(Int64), one(UInt64), UInt32[x])
+        end
+
+        # MiniBf(::UInt32, ::Bool)
         @testset "MiniBf($x, $sign)" begin
             if iszero(x)
                 @test MiniBf(x, sign) == MiniBf(true, zero(Int64), zero(UInt64), UInt32[])
