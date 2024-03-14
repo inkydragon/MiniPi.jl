@@ -57,7 +57,16 @@ function MiniBf(x::UInt32, sign=true)
     @assert length(bf.tab) == bf.len
     bf
 end
-MiniBf(x::Integer) = MiniBf(UInt32(Base.Checked.checked_abs(x)), !signbit(x))
+
+function MiniBf(x::Integer)
+    abs_x = Base.Checked.checked_abs(x)
+    if x > WORD_SIZE
+        throw(DomainError("x too large. Only impl MiniBf() for x < WORD_SIZE($WORD_SIZE)"))
+    end
+
+    MiniBf(UInt32(abs_x), !signbit(x))
+end
+
 
 function Base.:(==)(x::MiniBf, y::MiniBf)
     # TODO: use normalize

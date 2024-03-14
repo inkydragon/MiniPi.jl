@@ -1,5 +1,6 @@
 import MiniPi.MiniBf
 import MiniPi:
+    WORD_SIZE,
     precision, exponent,
     ucmp,
     # Arithmetic
@@ -47,19 +48,19 @@ end
     @test MiniBf(false) == MiniBf(UInt32(0))
     # Unsigned
     @test MiniBf(0xffff) == MiniBf(UInt32(0xffff))
-    @test MiniBf(0xffffffff) == MiniBf(UInt32(0xffffffff))
-    @test MiniBf(0x00000000ffffffff) == MiniBf(UInt32(0x00000000ffffffff))
+    @test MiniBf(WORD_SIZE) == MiniBf(WORD_SIZE)
+    @test MiniBf(UInt64(WORD_SIZE)) == MiniBf(WORD_SIZE)
     # Signed
     @test MiniBf(typemax(Int16)) == MiniBf(UInt32(typemax(Int16)))
     @test MiniBf(typemin(Int16)+1) == MiniBf(UInt32(32768-1), false)
-    @test MiniBf(typemax(Int32)) == MiniBf(UInt32(typemax(Int32)))
-    @test MiniBf(typemin(Int32)+1) == MiniBf(UInt32(2147483648-1), false)
-    @test MiniBf(Int64(typemax(UInt32))) == MiniBf(UInt32(4294967295))
-    @test MiniBf(-Int64(typemax(UInt32))) == MiniBf(UInt32(4294967295), false)
-    @test MiniBf(Int128(typemax(UInt32))) == MiniBf(UInt32(4294967295))
-    @test MiniBf(-Int128(typemax(UInt32))) == MiniBf(UInt32(4294967295), false)
-    @test MiniBf(BigInt(typemax(UInt32))) == MiniBf(UInt32(4294967295))
-    @test MiniBf(-BigInt(typemax(UInt32))) == MiniBf(UInt32(4294967295), false)
+    @test MiniBf(Int32(WORD_SIZE)) == MiniBf(WORD_SIZE)
+    @test MiniBf(-Int32(WORD_SIZE)) == MiniBf(WORD_SIZE, false)
+    @test MiniBf(Int64(WORD_SIZE)) == MiniBf(WORD_SIZE)
+    @test MiniBf(-Int64(WORD_SIZE)) == MiniBf(WORD_SIZE, false)
+    @test MiniBf(Int128(WORD_SIZE)) == MiniBf(WORD_SIZE)
+    @test MiniBf(-Int128(WORD_SIZE)) == MiniBf(WORD_SIZE, false)
+    @test MiniBf(BigInt(WORD_SIZE)) == MiniBf(WORD_SIZE)
+    @test MiniBf(-BigInt(WORD_SIZE)) == MiniBf(WORD_SIZE, false)
 end
 
 @testset "Base.precision" begin
@@ -113,7 +114,7 @@ end
     test_x = Int64[
         rand(UInt8, 10)...,
         rand(UInt16, 10)...,
-        rand(UInt32, 10)...,
+        rand(1:WORD_SIZE, 10)...,
     ]
     for x in test_x
         # gt >
@@ -138,7 +139,7 @@ end
     test_x = Int64[
         rand(UInt8, 10)...,
         rand(UInt16, 10)...,
-        rand(UInt32, 10)...,
+        rand(1:WORD_SIZE, 10)...,
     ]
     for x in test_x
         @test negate!(MiniBf(x)) == MiniBf(-x)
@@ -152,13 +153,13 @@ end
     function test_commutative(x, y)
         @assert x >= 0
         @test mul(MiniBf(x), y) == mul(MiniBf(y), UInt32(x))
-        @test mul(MiniBf(-x), y) == mul(MiniBf(-y), UInt32(x))
+        @test mul(MiniBf(-Int(x)), y) == mul(MiniBf(-Int(y)), UInt32(x))
     end
     test_x = Int64[
         0:10...,
         rand(UInt8, 10)...,
         rand(UInt16, 10)...,
-        rand(UInt32, 10)...,
+        rand(1:WORD_SIZE, 10)...,
     ]
     for x in test_x
         u32_x = UInt32(x)
