@@ -12,6 +12,8 @@ function check_word_size(x)
     end
 end
 
+
+#= Constructors =#
 """
 The Big Floating-point object.
 It represents an arbitrary precision floating-point number.
@@ -75,6 +77,8 @@ function MiniBf(x::Integer)
 end
 
 
+#= Compare Ops =#
+
 function Base.:(==)(x::MiniBf, y::MiniBf)
     # TODO: use normalize
 
@@ -98,10 +102,13 @@ function Base.:(==)(x::MiniBf, y::MiniBf)
 end
 
 
+#= String Conversion =#
+function to_string_trimmed(x::MiniBf, digits) end
 function to_string(bf::MiniBf, digits=0) end
 function to_string_sci(bf::MiniBf, digits=0) end
-function to_string_trimmed(x::MiniBf, digits) end
 
+
+#= Getter =#
 """
     Base.precision(x::MiniBf)
 
@@ -236,10 +243,6 @@ function mul(x::MiniBf, y::UInt32)
     z
 end
 mul(x::MiniBf, y::Unsigned) = mul(x, UInt32(y))
-
-function mul(x::MiniBf, y::UInt32, p) end
-function rcp(x::MiniBf, p) end
-# function div(x::MiniBf, y::UInt32, p) end
 
 """
     uadd(x::MiniBf, y::MiniBf, p=zero(UInt64))
@@ -418,4 +421,22 @@ function sub(x::MiniBf, y::MiniBf, p=zero(UInt64))
     end
 end
 
+"""
+Depend on: multiplyFFT
+"""
+function mul(x::MiniBf, y::MiniBf, p) end
+
+"""
+Depend on: rcp, sub, mul
+"""
+function rcp(x::MiniBf, p) end
+
+"""
+Depend on: mul, rcp
+"""
+function Base.div(x::MiniBf, y::UInt32, p) end
+
+"""
+Depend on: invsqrt, sub, mul
+"""
 function invsqrt(x::MiniBf, y::UInt32, p) end
