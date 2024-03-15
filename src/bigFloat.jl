@@ -77,31 +77,6 @@ function MiniBf(x::Integer)
 end
 
 
-#= Compare Ops =#
-
-function Base.:(==)(x::MiniBf, y::MiniBf)
-    # TODO: use normalize
-
-    if iszero(x.len) || iszero(y.len)
-        # skip compare .tab[]
-        x.len == y.len &&
-            x.sign == y.sign &&
-            x.exp == y.exp
-    elseif x.len == y.len
-        @assert length(x.tab) >= x.len
-        @assert length(y.tab) >= y.len
-
-        x.sign == y.sign &&
-            x.exp == y.exp &&
-            x.len == y.len &&
-            # NOTE: x.tab may contains extra 0x0 at end
-            x.tab[1:x.len] == y.tab[1:y.len]
-    else
-        false
-    end
-end
-
-
 #= String Conversion =#
 function to_string_trimmed(x::MiniBf, digits) end
 function to_string(bf::MiniBf, digits=0) end
@@ -154,6 +129,31 @@ function word_at(x::MiniBf, mag::Int64)
     return x.tab[Int(mag - x.exp) + 1]
 end
 
+
+#= Compare Ops =#
+
+function Base.:(==)(x::MiniBf, y::MiniBf)
+    # TODO: use normalize
+
+    if iszero(x.len) || iszero(y.len)
+        # skip compare .tab[]
+        x.len == y.len &&
+            x.sign == y.sign &&
+            x.exp == y.exp
+    elseif x.len == y.len
+        @assert length(x.tab) >= x.len
+        @assert length(y.tab) >= y.len
+
+        x.sign == y.sign &&
+            x.exp == y.exp &&
+            x.len == y.len &&
+            # NOTE: x.tab may contains extra 0x0 at end
+            x.tab[1:x.len] == y.tab[1:y.len]
+    else
+        false
+    end
+end
+
 """
     ucmp(x::MiniBf, y::MiniBf)
 
@@ -186,7 +186,6 @@ function ucmp(x::MiniBf, y::MiniBf)
     
     return 0
 end
-
 
 
 #= Arithmetic =#
