@@ -235,4 +235,23 @@ end
     @test usub(MiniBf(1), MiniBf(1)) == MiniBf(0)
     @test usub(MiniBf(1), MiniBf(-1)) == MiniBf(0)
 
+    test_x = Int64[
+        1:10...,
+        rand(UInt8, 10)...,
+        rand(UInt16, 10)...,
+        rand(1:WORD_MAX, 10)...,
+    ]
+    for i64_x in test_x
+        x = MiniBf(i64_x)
+        neg_x = MiniBf(-i64_x)
+        u32_x = UInt32(i64_x)
+
+        @test usub(x, MiniBf(0)) == x
+        @test usub(x, x) == MiniBf(0)
+        @test usub(x, neg_x) == MiniBf(0)
+        @test usub(MiniBf(0), MiniBf(0)) == MiniBf(0)
+
+        @test usub(MiniBf(i64_x+1), x) == MiniBf(1)
+        @test usub(x, MiniBf(i64_x-1)) == MiniBf(1)
+    end
 end
