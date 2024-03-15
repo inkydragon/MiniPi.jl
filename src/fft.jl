@@ -1,7 +1,7 @@
 """
 A basic FFT multiply implementation. No optimizations are done.
 """
-
+# import LinearAlgebra: rdiv!
 
 function bit_reverse_indices(N::Integer)
     base = 2
@@ -83,6 +83,15 @@ Parameters:
 - k: 2^k is the size of the transform
 """
 function fft_inverse!(T::AbstractVector{ComplexF64}, k::Int)
+    _ifft_kernel!(T, k)
+
+    len = 1 << k
+    # XXX: bugfix:  T*1/n
+    # rdiv!(T, len)
+    T
+end
+
+function _ifft_kernel!(T::AbstractVector{ComplexF64}, k::Int)
     if iszero(k)
         return
     end
@@ -95,11 +104,11 @@ function fft_inverse!(T::AbstractVector{ComplexF64}, k::Int)
     omega = -2 * pi / len
 
     # Recursively perform FFT on lower elements.
-    fft_inverse!(T, k - 1)
+    _ifft_kernel!(T, k - 1)
 
     # Recursively perform FFT on upper elements.
     view_T = @view T[(half_length+1):end]
-    fft_inverse!(view_T, k - 1)
+    _ifft_kernel!(view_T, k - 1)
 
     # Perform FFT reduction into two halves.
     for c in 1:half_length
