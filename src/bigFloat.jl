@@ -237,7 +237,6 @@ function mul(x::MiniBf, y::UInt32)
 end
 mul(x::MiniBf, y::Unsigned) = mul(x, UInt32(y))
 
-function sub(x::MiniBf, y::UInt32, p=0) end
 function mul(x::MiniBf, y::UInt32, p) end
 function rcp(x::MiniBf, p) end
 # function div(x::MiniBf, y::UInt32, p) end
@@ -393,6 +392,29 @@ function add(x::MiniBf, y::MiniBf, p=zero(UInt64))
     else
         # y >= 0 > x
         usub(y, x, p)
+    end
+end
+
+"""
+    sub(x::MiniBf, y::MiniBf, p=zero(UInt64))
+
+Subtraction: x - y, 
+The target precision is p.
+
+If (p = 0), then no truncation is done.
+The entire operation is done at maximum precision with no data loss.
+"""
+function sub(x::MiniBf, y::MiniBf, p=zero(UInt64))
+    if x.sign != y.sign
+        # Different sign. Add.
+        uadd(x, y, p)
+    elseif ucmp(x, y) > 0
+        # x > y
+        usub(x, y, p)
+    else
+        # y > x
+        z = usub(y, x, p)
+        negate!(z)
     end
 end
 
