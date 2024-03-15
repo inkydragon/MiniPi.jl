@@ -50,12 +50,31 @@ end
 end
 
 @testset "fft_inverse!" begin
-    # TODO: bad bit-reversed order
-    r1 = ComplexF64[ 10+0im, -1+1im, -4+0im, -1+-1im ]
-    t1 = ComplexF64[ 1:4... ]
-    fft_inverse!(t1, 2)
+    function test_ifft(k, ref::Vector{Complex{T}}) where T
+        len = 1 << k
+        ta = complex(float(1:len))
 
-    @test isapprox(r1, t1)
+        fft_inverse!(ta, k)
+        @test isapprox(ref, ta)
+    end
+
+    #=ref: FFTW.jl
+    
+    for k in 1:4
+        len = 1 << k
+        println(ifft(1:len))
+    end
+    =#
+    # TODO: bad bit-reversed order
+    # ref-result output by: fft.cpp[FFT_CachedTwiddles.ipp]
+    test_ifft(1, [3+0im, -1+0im])
+    test_ifft(2, [10+0im, -1+1im, -4+0im, -1+-1im])
+    test_ifft(3, [
+        36+0im, -1+2.414213562373095im,
+        -4+4im, -1+0.4142135623730949im,
+        -16+0im, -1-0.4142135623730949im,
+        -4+-4im, -1-2.414213562373095im
+    ])
 end
 
 @testset "fft" begin
