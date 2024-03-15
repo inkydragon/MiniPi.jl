@@ -1,6 +1,6 @@
 import MiniPi:
     bit_reverse_indices,
-    fft_forward!
+    fft_forward!, fft_inverse!
 
 @testset "fft" begin
 
@@ -19,5 +19,14 @@ end
     r1 = ComplexF64[ 10+0im, -2+0im,-2+-2im, -2+2im ]
     t1 = ComplexF64[ 1:4... ]
     fft_forward!(t1, 2)
+    @test isapprox(r1, t1)
+end
+
+@testset "fft_inverse!" begin
+    # TODO: bad bit-reversed order
+    r1 = ComplexF64[ 10+0im, -1+1im, -4+0im, -1+-1im ]
+    t1 = ComplexF64[ 1:4... ]
+    fft_inverse!(t1, 2)
+
     @test isapprox(r1, t1)
 end
