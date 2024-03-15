@@ -307,6 +307,74 @@ function uadd(x::MiniBf, y::MiniBf, p=zero(UInt64))
     return z
 end
 
-function usub(x::MiniBf, y::UInt32, p) end
+"""
+    usub(xx::MiniBf, yy::MiniBf, p=zero(UInt64))
+
+Perform subtraction ignoring the sign of the two operands.
+
+"this" must be greater than or equal to y. Otherwise, the behavior
+is undefined.
+"""
+function usub(x::MiniBf, y::MiniBf, p=zero(UInt64))
+    # @assert x >= y
+
+    # Magnitude
+    magA = x.exp + Int64(x.len)
+    magB = y.exp + Int64(y.len)
+    top = max(magA, magB)
+    bot = min(x.exp, y.exp)
+
+    # Truncate precision
+    TL = top - bot
+
+    if p == 0
+        # Default value. No trunction.
+        p = TL
+    else
+        # Increase precision
+        p += EXTRA_PRECISION
+    end
+
+    if TL > p
+        bot = top - p
+        TL = p
+    end
+
+    # Compute basic fields.
+    z = MiniBf()
+    z.sign = x.sign
+    z.exp = bot
+    z.len = TL
+
+    # Allocate mantissa
+    z.tab = zeros(UInt32, z.len)
+
+    # Subtract
+    carry = 0
+    c = one(UInt64)
+    for bot in bot:(top-1)
+        word = word_at(x, bot) - word_at(y, bot) - carry
+        carry = 0
+        if word < 0
+            word += WORD_SIZE
+            carry = 1
+        end
+        z.tab[c] = word
+        c += 1
+    end
+
+    # Strip leading zeros
+    while z.len > 0 && iszero(z.tab[z.len])
+        z.len -= 1
+    end
+
+    if iszero(z.len)
+        z.exp = 0
+        z.sign = true
+        z.tab = zeros(UInt32, 0)
+    end
+
+    return z
+end
 
 function invsqrt(x::MiniBf, y::UInt32, p) end
