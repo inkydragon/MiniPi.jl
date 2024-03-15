@@ -100,6 +100,7 @@ end
 
 function to_string(bf::MiniBf, digits=0) end
 function to_string_sci(bf::MiniBf, digits=0) end
+function to_string_trimmed(x::MiniBf, digits) end
 
 """
     Base.precision(x::MiniBf)
@@ -241,10 +242,6 @@ function sub(x::MiniBf, y::UInt32, p=0) end
 function mul(x::MiniBf, y::UInt32, p) end
 function rcp(x::MiniBf, p) end
 # function div(x::MiniBf, y::UInt32, p) end
-
-
-function to_string_trimmed(x::MiniBf, digits) end
-function ucmp(x::MiniBf, y::UInt32) end
 
 """
     uadd(x::MiniBf, y::MiniBf, p=zero(UInt64))
