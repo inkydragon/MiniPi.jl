@@ -12,11 +12,41 @@ import MiniPi:
 end
 
 @testset "fft_forward!" begin
+    function test_fft(k, ref::Vector{Complex{T}}) where T
+        len = 1 << k
+        ta = complex(float(1:len))
+
+        fft_forward!(ta, k)
+        @test isapprox(ref, ta)
+    end
+
+    #=ref: FFTW.jl
+    
+    for k in 1:4
+        len = 1 << k
+        println(fft(1:len))
+    end
+    =#
+    test_fft(1, [ 3+0im, -1+0im ])
     # TODO: bad bit-reversed order
-    r1 = ComplexF64[ 10+0im, -2+0im,-2+-2im, -2+2im ]
-    t1 = ComplexF64[ 1:4... ]
-    fft_forward!(t1, 2)
-    @test isapprox(r1, t1)
+    # ref-result output by: fft.cpp[FFT_CachedTwiddles.ipp]
+    test_fft(2, [ 10+0im, -2+0im, -2+-2im, -2+2im ])
+    test_fft(3, [
+        36+0im, -4+0im,
+        -4-4im, -4+4im,
+        -4-9.65685424949238im, -4+1.65685424949238im,
+        -4-1.65685424949238im, -4+9.65685424949238im
+    ])
+    test_fft(4, [
+        136+0im, -8+0im,
+        -8+-8im, -8+8im, 
+        -8+-19.31370849898476im, -8+3.313708498984759im,
+        -8+-3.313708498984759im, -8+19.31370849898476im,
+        -8+-40.21871593700678im, -8+1.591298939037266im,
+        -8+-5.345429103354391im, -8+11.97284610132391im,
+        -8+-11.97284610132391im, -8+5.345429103354395im,
+        -8+-1.591298939037266im, -8+40.21871593700678im,
+    ])
 end
 
 @testset "fft_inverse!" begin
