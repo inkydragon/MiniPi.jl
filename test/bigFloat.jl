@@ -4,7 +4,7 @@ import MiniPi:
     precision, exponent,
     ucmp,
     # Arithmetic
-    negate!, mul, uadd, usub
+    negate!, mul, uadd, usub, add
 
 @testset "bigFloat.jl" begin
 
@@ -254,4 +254,16 @@ end
         @test usub(MiniBf(i64_x+1), x) == MiniBf(1)
         @test usub(x, MiniBf(i64_x-1)) == MiniBf(1)
     end
+end
+
+@testset "add" begin
+    @test add(MiniBf(0), MiniBf(0)) == MiniBf(0)
+    @test add(MiniBf(1), MiniBf(0)) == MiniBf(1)
+    @test add(MiniBf(1), MiniBf(1)) == MiniBf(2)
+
+    @test add(MiniBf(1), MiniBf(-1)) == MiniBf(0)
+    @test add(MiniBf(2), MiniBf(-1)) == MiniBf(1)
+
+    @test add(MiniBf(-1), MiniBf(0)) == MiniBf(-1)
+    @test add(MiniBf(-1), MiniBf(1)) == MiniBf(0)
 end
