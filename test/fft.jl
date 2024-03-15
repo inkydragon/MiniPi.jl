@@ -2,9 +2,6 @@ import MiniPi:
     bit_reverse_indices,
     fft_forward!, fft_inverse!
 
-@testset "fft" begin
-
-end
 
 @testset "bit_reverse_indices" begin
     @test bit_reverse_indices(2) == [1, 2]
@@ -29,4 +26,12 @@ end
     fft_inverse!(t1, 2)
 
     @test isapprox(r1, t1)
+end
+
+@testset "fft" begin
+    t1 = ComplexF64[ 1:4... ]
+    fft_forward!(t1, 2)
+    fft_inverse!(t1, 2)
+    
+    @test_broken isapprox(zeros(ComplexF64, 4), t1)
 end
