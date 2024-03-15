@@ -187,35 +187,43 @@ end
     @test uadd(MiniBf(0), MiniBf(0)) == MiniBf(0)
     @test uadd(MiniBf(1), MiniBf(0)) == MiniBf(1)
 
-    function test_uadd_commutative(x, y, p=zero(UInt64))
-        @assert x >= 0
-        u32_x = UInt32(x)
-        u32_y = UInt32(y)
+    function test_uadd_commutative(i64_x, i64_y, p=zero(UInt64))
+        @assert i64_x > 0 && i64_y > 0
+        x = MiniBf(i64_x)
+        neg_x = MiniBf(-Int(i64_x))
+        y = MiniBf(i64_y)
+        neg_y = MiniBf(-Int(i64_y))
 
-        baseline_sum = uadd(MiniBf(x), u32_y, p)
-        @test baseline_sum == uadd(MiniBf(y), u32_x, p)
-        @test baseline_sum == uadd(MiniBf(-x), u32_y, p)
-        @test baseline_sum == uadd(MiniBf(-y), u32_x, p)
+        pos_baseline_sum = uadd(x, y, p)
+        @test pos_baseline_sum == uadd(y, x, p)
+        @test pos_baseline_sum == uadd(x, neg_y, p)
+        @test pos_baseline_sum == uadd(y, neg_x, p)
+
+        neg_baseline_sum = uadd(neg_x, y, p)
+        @test neg_baseline_sum == uadd(neg_y, x, p)
+        @test neg_baseline_sum == uadd(neg_x, neg_y, p)
+        @test neg_baseline_sum == uadd(neg_y, neg_x, p)
     end
 
     test_x = Int64[
-        0:10...,
+        1:10...,
         rand(UInt8, 10)...,
         rand(UInt16, 10)...,
         rand(1:WORD_MAX, 10)...,
     ]
-    # for i64_x in test_x
-    #     x = MiniBf(i64_x)
-    #     neg_x = MiniBf(-i64_x)
-    #     u32_x = UInt32(i64_x)
+    for i64_x in test_x
+        x = MiniBf(i64_x)
+        neg_x = MiniBf(-i64_x)
+        u32_x = UInt32(i64_x)
 
-    #     @test uadd(x, 0x0) == x
-    #     @test uadd(neg_x, 0x0) == x
+        @test uadd(x, MiniBf(0)) == x
+        @test uadd(neg_x, MiniBf(0)) == neg_x
+        @test uadd(MiniBf(0), x) == x
+        @test uadd(MiniBf(0), neg_x) == x
 
-    #     test_uadd_commutative(x, 0x0)
-    #     test_uadd_commutative(x, 0x1)
-    #     test_uadd_commutative(x, 0x2)
-    #     test_uadd_commutative(x, u32_x)
-    #     test_uadd_commutative(x, WORD_MAX)
-    # end
+        test_uadd_commutative(i64_x, 0x1)
+        test_uadd_commutative(i64_x, 0x2)
+        test_uadd_commutative(i64_x, u32_x)
+        test_uadd_commutative(i64_x, WORD_MAX)
+    end
 end
