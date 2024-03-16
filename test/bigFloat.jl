@@ -289,4 +289,38 @@ end
     @test mul(MiniBf(0), MiniBf(-1)) == MiniBf(0)
     @test mul(MiniBf(1), MiniBf(1)) == MiniBf(1)
     @test mul(MiniBf(-1), MiniBf(-1)) == MiniBf(1)
+
+    function test_mul_commutative(i64_x, i64_y)
+        @assert i64_x >= 0 && i64_y >= 0
+        x = MiniBf(i64_x)
+        neg_x = MiniBf(-i64_x)
+        y = MiniBf(i64_y)
+        neg_y = MiniBf(-i64_y)
+
+        @test mul(x, y) == mul(y, x)
+        @test mul(neg_x, y) == mul(x, neg_y)
+        @test mul(neg_x, y) == mul(neg_y, x)
+        @test mul(neg_x, neg_y) == mul(neg_x, neg_y)
+    end
+    test_mul_commutative(x, y::Unsigned) = test_mul_commutative(x, Int(y))
+    test_x = Int64[
+        0:10...,
+        rand(UInt8, 10)...,
+        rand(UInt16, 10)...,
+        rand(1:WORD_MAX, 10)...,
+    ]
+    for i64_x in test_x
+        x = MiniBf(i64_x)
+        neg_x = MiniBf(-i64_x)
+
+        @test mul(x, MiniBf(0)) == MiniBf(0)
+        @test mul(x, MiniBf(1)) == x
+        @test mul(neg_x, MiniBf(0)) == MiniBf(0)
+        @test mul(neg_x, MiniBf(1)) == neg_x
+
+        test_mul_commutative(i64_x, 0x0)
+        test_mul_commutative(i64_x, 0x1)
+        test_mul_commutative(i64_x, 0x2)
+        test_mul_commutative(i64_x, WORD_MAX)
+    end
 end
