@@ -282,3 +282,11 @@ end
     @test sub(MiniBf(1), MiniBf(3)) == MiniBf(-2)
     @test sub(MiniBf(-1), MiniBf(1)) == MiniBf(-2)
 end
+
+@testset "mul(::MiniBf, ::MiniBf)" begin
+    @test mul(MiniBf(0), MiniBf(0)) == MiniBf(0)
+    @test mul(MiniBf(1), MiniBf(0)) == MiniBf(0)
+    @test mul(MiniBf(0), MiniBf(-1)) == MiniBf(0)
+    @test mul(MiniBf(1), MiniBf(1)) == MiniBf(1)
+    @test mul(MiniBf(-1), MiniBf(-1)) == MiniBf(1)
+end

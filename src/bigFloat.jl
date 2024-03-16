@@ -421,9 +421,76 @@ function sub(x::MiniBf, y::MiniBf, p=zero(UInt64))
 end
 
 """
-Depend on: multiplyFFT
+    mul(x::MiniBf, y::MiniBf, p=zero(UInt64))
+
+Multiplication
+
+The target precision is p.
+If (p = 0), then no truncation is done. The entire operation is done
+at maximum precision with no data loss.
+
+Depend on: [`multiply_fft!`](@ref)
 """
-function mul(x::MiniBf, y::MiniBf, p) end
+function mul(x::MiniBf, y::MiniBf, p=zero(UInt64))
+    # Either operand is zero.
+    if x.len == 0 || y.len == 0
+        return MiniBf()
+    end
+
+    if iszero(p)
+        # Default value. No truncation.
+        p = x.len + y.len
+    else
+        # Increase precision
+        p += EXTRA_PRECISION
+    end
+
+    # Collect operands.
+    Aexp = x.exp
+    Bexp = y.exp
+    AL = x.len
+    BL = y.len
+    AT = x.tab
+    BT = y.tab
+
+    # Perform precision truncation.
+    idx_A = 0
+    if AL > p
+        chop = AL - p
+        AL = p
+        Aexp += chop
+        idx_A = chop
+    end
+    
+    idx_B = 0
+    if BL > p
+        chop = BL - p
+        BL = p
+        Bexp += chop
+        idx_B = chop
+    end
+
+    # Compute basic fields.
+    z = MiniBf()
+    z.sign = x.sign == y.sign   # Sign is positive if signs are equal.
+    z.exp = Aexp + Bexp         # Add the exponents.
+    z.len = AL + BL             # Add the length for now. May need to correct later.
+
+    # Allocate mantissa
+    z.tab = zeros(UInt32, z.len)
+
+    # Perform multiplication using FFT.
+    view_A = @view AT[(idx_A+1):end]
+    view_B = @view BT[(idx_B+1):end]
+    multiply_fft!(z.tab, view_A, AL, view_B, BL)
+
+    # Check top word and correct length.
+    if iszero(z.tab[z.len])
+        z.len -= 1
+    end
+
+    z
+end
 
 """
 Depend on: rcp, sub, mul
