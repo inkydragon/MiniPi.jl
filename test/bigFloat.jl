@@ -328,6 +328,8 @@ end
 end
 
 @testset "rcp" begin
+    @test_throws DomainError rcp(MiniBf(0), zero(UInt64))
+
     @test rcp(MiniBf(1), zero(UInt64)) ==
         MiniBf(true, -1, 0x0000000000000002, UInt32[0x00000000, 0x00000001])
 end
