@@ -5,7 +5,7 @@ import MiniPi:
     ucmp,
     # Arithmetic
     negate!, mul, uadd, usub, add, sub,
-    rcp
+    rcp, div
 
 
 @testset "bigFloat.jl" begin
@@ -330,4 +330,9 @@ end
 @testset "rcp" begin
     @test rcp(MiniBf(1), zero(UInt64)) ==
         MiniBf(true, -1, 0x0000000000000002, UInt32[0x00000000, 0x00000001])
+end
+
+@testset "div" begin
+    @test div(MiniBf(1), MiniBf(1), zero(UInt64)) ==
+        MiniBf(true, -1, 0x0000000000000002, UInt32[0x00000000, 0x00000001, 0x00000000]) 
 end

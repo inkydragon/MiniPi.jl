@@ -577,9 +577,16 @@ function rcp(x::MiniBf, p::UInt64)
 end
 
 """
+    Base.div(x::MiniBf, y::UInt32, p::UInt64)
+
+Division
+
 Depend on: mul, rcp
 """
-function Base.div(x::MiniBf, y::UInt32, p) end
+function Base.div(x::MiniBf, y::MiniBf, p::UInt64)
+    inv_y = rcp(y, p)
+    mul(x, inv_y, p)
+end
 
 """
 Depend on: invsqrt, sub, mul
