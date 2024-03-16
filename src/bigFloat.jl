@@ -494,9 +494,87 @@ function mul(x::MiniBf, y::MiniBf, p=zero(UInt64))
 end
 
 """
+    rcp(x::MiniBf, p::UInt64)
+
+Compute reciprocal using Newton's Method.
+
+    r1 = r0 - (r0 * x - 1) * r0
+
 Depend on: rcp, sub, mul
 """
-function rcp(x::MiniBf, p) end
+function rcp(x::MiniBf, p::UInt64)
+    if iszero(x.len)
+        throw(DomainError("Divide by Zero."))
+    end
+
+    # Collect operand
+    Aexp = x.exp
+    AL = x.len
+
+    # End of recursion. Generate starting point.
+    if iszero(p)
+        # Truncate precision to 3.
+        idx_x = 0
+        p = 3
+        if AL > p
+            chop = AL - p
+            AL = p
+            Aexp += chop
+            idx_x = chop
+        end
+
+        # Convert number to floating-point.
+        val = x.tab[idx_x+1]
+        if AL >= 2
+            val += x.tab[idx_x+2] * WORD_SIZE
+        end
+        if AL >= 3
+            val += x.tab[idx_x+3] * WORD_SIZE * WORD_SIZE
+        end
+
+        # Compute reciprocal.
+        val = 1.0 / val
+        Aexp = -Aexp
+
+        # Scale
+        while val < WORD_SIZE
+            val *= WORD_SIZE
+            Aexp -= 1
+        end
+
+        # Rebuild a MiniBf.
+        val64 = trunc(UInt64, val)
+
+        out = MiniBf()
+        out.sign = x.sign
+
+        out.tab = UInt32[val64 % WORD_SIZE, val64 ÷ WORD_SIZE]
+        out.len = 2
+        out.exp = Aexp
+
+        return out
+    end
+
+    # Half the precision
+    s = div(p, 2) + 1
+    if p == 1
+        s = 0
+    end
+    if p == 2
+        s = 1
+    end
+
+    # Recurse at half the precision
+    r0 = rcp(x, s)
+
+    # r1 = r0 - (r0 * x - 1) * r0
+    r0x = mul(r0, x, p)
+    sub1 = sub(r0x, MiniBf(1), p)
+    mulr0 = mul(sub1, r0, p)
+    r1 = sub(r0, mulr0, p)
+
+    return r1
+end
 
 """
 Depend on: mul, rcp

@@ -4,7 +4,9 @@ import MiniPi:
     precision, exponent,
     ucmp,
     # Arithmetic
-    negate!, mul, uadd, usub, add, sub
+    negate!, mul, uadd, usub, add, sub,
+    rcp
+
 
 @testset "bigFloat.jl" begin
 
@@ -323,4 +325,9 @@ end
         test_mul_commutative(i64_x, 0x2)
         test_mul_commutative(i64_x, WORD_MAX)
     end
+end
+
+@testset "rcp" begin
+    @test rcp(MiniBf(1), zero(UInt64)) ==
+        MiniBf(true, -1, 0x0000000000000002, UInt32[0x00000000, 0x00000001])
 end
