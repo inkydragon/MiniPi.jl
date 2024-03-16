@@ -127,7 +127,9 @@ end
         C = zeros(UInt32, len)
         A = rand(one(UInt32):WORD_MAX, AL)
         ref = deepcopy(A)
+        zero_A = zeros(UInt32, AL)
         B = ones(UInt32, BL)
+        zero_B = zeros(UInt32, BL)
 
         # A == A * 1
         multiply_fft!(C, A, AL, B, BL)
@@ -137,5 +139,15 @@ end
         A = deepcopy(ref)
         multiply_fft!(C, B, BL, A, AL)
         @test isapprox(ref, C[1:AL])
+
+        # 0 == A * 0
+        A = deepcopy(ref)
+        multiply_fft!(C, A, AL, zero_B, BL)
+        @test isapprox(zero_A, C[1:AL])
+
+        # 0 == 0 * A
+        A = deepcopy(ref)
+        multiply_fft!(C, zero_B, BL, A, AL)
+        @test isapprox(zero_A, C[1:AL])
     end
 end
