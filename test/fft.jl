@@ -1,6 +1,8 @@
 import MiniPi:
+    WORD_MAX,
     bit_reverse_indices,
-    fft_forward!, fft_inverse!, fft_pointwise!
+    fft_forward!, fft_inverse!, fft_pointwise!,
+    word_to_fft!, fft_to_word!
 
 
 @testset "bit_reverse_indices" begin
@@ -93,5 +95,23 @@ end
         ref = t .* a
 
         @test isapprox(ref, fft_pointwise!(t, a, k))
+    end
+end
+
+@testset "word_to_fft!, fft_to_word!" begin
+    for k = 1:4
+        len = 1 << k
+        AL = trunc(UInt64, len/3)
+        @assert len >= 3*AL
+
+        T = zeros(ComplexF64, len)
+        fill!(T, complex(NaN, NaN))
+        A = rand(one(UInt32):WORD_MAX, AL)
+        ref = deepcopy(A)
+
+        word_to_fft!(T, k, A, AL)
+        fft_to_word!(A, AL, T, k)
+
+        @test isapprox(ref, A)
     end
 end
