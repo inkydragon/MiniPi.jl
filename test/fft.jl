@@ -1,6 +1,6 @@
 import MiniPi:
     bit_reverse_indices,
-    fft_forward!, fft_inverse!
+    fft_forward!, fft_inverse!, fft_pointwise!
 
 
 @testset "bit_reverse_indices" begin
@@ -83,4 +83,15 @@ end
     fft_inverse!(t1, 2)
     
     @test_broken isapprox(zeros(ComplexF64, 4), t1)
+end
+
+@testset "fft_pointwise!" begin
+    for k = 1:4
+        len = 1 << k
+        t = rand(ComplexF64, len)
+        a = rand(ComplexF64, len)
+        ref = t .* a
+
+        @test isapprox(ref, fft_pointwise!(t, a, k))
+    end
 end

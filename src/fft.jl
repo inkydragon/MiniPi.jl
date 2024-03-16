@@ -129,6 +129,27 @@ function _ifft_kernel!(T::AbstractVector{ComplexF64}, k::Int)
 end
 
 """
+    fft_pointwise(T::Vector{ComplexF64}, A::Vector{ComplexF64}, k::Int)
+
+Performs pointwise multiplications of two FFT arrays.
+
+Parameters:
+- T: Pointer to array.
+- k: 2^k is the size of the transform
+"""
+function fft_pointwise!(T::Vector{ComplexF64}, A::Vector{ComplexF64}, k::Int)
+    len = 1 << k
+    @assert length(T) >= len && length(A) >= len
+
+    for i in 1:len
+        T[i] *= A[i]
+    end
+
+    T
+end
+
+
+"""
     ensure_fft_tables(cl::UInt64)
 
 Ensure that the pre-computed twiddle factor table is large enough to handle
