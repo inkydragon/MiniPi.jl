@@ -480,8 +480,9 @@ function mul(x::MiniBf, y::MiniBf, p=zero(UInt64))
     z.tab = zeros(UInt32, z.len)
 
     # Perform multiplication using FFT.
-    view_A = @view AT[(idx_A+1):end]
-    view_B = @view BT[(idx_B+1):end]
+    # TODO: use @view
+    view_A = AT[(idx_A+1):end]
+    view_B = BT[(idx_B+1):end]
     multiply_fft!(z.tab, view_A, AL, view_B, BL)
 
     # Check top word and correct length.
