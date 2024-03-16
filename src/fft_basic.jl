@@ -242,3 +242,54 @@ function unscale_fft_to_word!(A::Vector{UInt32}, AL::UInt64, T::Vector{ComplexF6
 
     fft_to_word!(A, AL, T, k, scale)
 end
+
+
+"""
+No-Op for basic impl.
+"""
+function ensure_fft_tables(cl::UInt64)
+    # No-Op
+end
+
+function multiply_fft!(C::Vector{UInt32},
+        A::Vector{UInt32}, AL::UInt64,
+        B::Vector{UInt32}, BL::UInt64,
+    )
+
+    CL = AL + BL
+
+    # Determine minimum FFT size.
+    k = 0
+    len = one(UInt64)
+    while len < 3*CL
+        len <<= 1
+        k += 1
+    end
+
+    # Allocate FFT arrays
+    Ta = zeros(ComplexF64, len)
+    Tb = zeros(ComplexF64, len)
+
+    # Perform a convolution using FFT.
+    # Yeah, this is slow for small sizes, but it's asympotically optimal.
+
+    # 3 digits per point is small enough to not encounter round-off error
+    # until a transform size of 2^30.
+    # A transform length of 2^29 allows for the maximum product size to be
+    # 2^29 * 3 = 1, 610, 612, 736 decimal digits.
+    if k > 29
+        throw(ArgumentError("FFT size limit exceeded."))
+    end
+
+    word_to_fft!(Ta, k, A, AL)  # Convert 1st operand
+    word_to_fft!(Tb, k, B, BL)  # Convert 2nd operand
+
+    fft_forward!(Ta, k)         # Transform 1st operand
+    fft_forward!(Tb, k)         # Transform 2nd operand
+    fft_pointwise!(Ta, Tb, k)   # Pointwise multiply
+    fft_inverse!(Ta, k)         # Perform inverse transform.
+
+    unscale_fft_to_word!(C, CL, Ta, k)  # Convert back to word array.
+
+    C
+end

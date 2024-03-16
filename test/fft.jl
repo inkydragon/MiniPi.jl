@@ -2,7 +2,8 @@ import MiniPi:
     WORD_MAX,
     bit_reverse_indices,
     fft_forward!, fft_inverse!, fft_pointwise!,
-    word_to_fft!, fft_to_word!
+    word_to_fft!, fft_to_word!,
+    ensure_fft_tables, multiply_fft!
 
 
 @testset "bit_reverse_indices" begin
@@ -113,5 +114,29 @@ end
         fft_to_word!(A, AL, T, k)
 
         @test isapprox(ref, A)
+    end
+end
+
+@testset "multiply_fft!" begin
+    @test ensure_fft_tables(zero(UInt64)) |> isnothing
+
+    for k = 1:4
+        len = 1 << k
+
+        C = zeros(UInt32, len)
+        AL = trunc(UInt64, len/3)
+        A = rand(one(UInt32):WORD_MAX, AL)
+        ref = deepcopy(A)
+        BL = UInt64(1)
+        B = ones(UInt32, BL)
+
+        # A == A * 1
+        multiply_fft!(C, A, AL, B, BL)
+        @test isapprox(ref, C[1:AL])
+
+        # A == 1 * A
+        A = deepcopy(ref)
+        multiply_fft!(C, B, BL, A, AL)
+        @test isapprox(ref, C[1:AL])
     end
 end
