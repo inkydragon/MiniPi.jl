@@ -3,7 +3,7 @@ import MiniPi:
     bit_reverse_indices,
     fft_forward!, fft_inverse!, fft_pointwise!,
     word_to_fft!, fft_to_word!,
-    ensure_fft_tables, multiply_fft!
+    ensure_fft_tables, minimum_fft_size, multiply_fft!
 
 
 @testset "bit_reverse_indices" begin
@@ -120,14 +120,13 @@ end
 @testset "multiply_fft!" begin
     @test ensure_fft_tables(zero(UInt64)) |> isnothing
 
-    for k = 1:4
-        len = 1 << k
+    for AL = UInt64(1):UInt64(4),
+        BL = UInt64(1)
+        _, len = minimum_fft_size(AL+BL)
 
         C = zeros(UInt32, len)
-        AL = trunc(UInt64, len/3)
         A = rand(one(UInt32):WORD_MAX, AL)
         ref = deepcopy(A)
-        BL = UInt64(1)
         B = ones(UInt32, BL)
 
         # A == A * 1

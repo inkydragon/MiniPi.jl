@@ -251,20 +251,27 @@ function ensure_fft_tables(cl::UInt64)
     # No-Op
 end
 
+"""
+Determine minimum FFT size.
+"""
+function minimum_fft_size(cl::UInt64)
+    k = 0
+    len = one(UInt64)
+    while len < 3*cl
+        len <<= 1
+        k += 1
+    end
+
+    k, len
+end
+
 function multiply_fft!(C::Vector{UInt32},
         A::Vector{UInt32}, AL::UInt64,
         B::Vector{UInt32}, BL::UInt64,
     )
-
     CL = AL + BL
 
-    # Determine minimum FFT size.
-    k = 0
-    len = one(UInt64)
-    while len < 3*CL
-        len <<= 1
-        k += 1
-    end
+    k, len = minimum_fft_size(CL)
 
     # Allocate FFT arrays
     Ta = zeros(ComplexF64, len)
