@@ -164,21 +164,24 @@ end
 end
 
 @testset "to_string_sci!" begin
-    function test_to_string_sci(x, to_digits=0)
+    function test_to_string_sci(ref, x, to_digits=0)
         u8 = zeros(UInt8, to_digits)
-        to_string_sci!(u8, x, to_digits)
+
+        @test ref == to_string_sci!(u8, x, to_digits)
+        x == MiniBf(0) && return
+
+        @test "-" * ref == to_string_sci!(u8, negate!(x), to_digits)
     end
 
-    @test "0." == test_to_string_sci(MiniBf(0))
-    @test "1." == test_to_string_sci(MiniBf(1))
-    @test "2." == test_to_string_sci(MiniBf(2))
-    @test "9.99999998 * 10^8" == test_to_string_sci(MiniBf(WORD_MAX-1))
-    @test "9.99999999 * 10^8" == test_to_string_sci(MiniBf(WORD_MAX))
+    test_to_string_sci("0.", MiniBf(0))
+    test_to_string_sci("1.", MiniBf(1))
+    test_to_string_sci("2.", MiniBf(2))
+    test_to_string_sci("9.99999998 * 10^8", MiniBf(WORD_MAX-1))
+    test_to_string_sci("9.99999999 * 10^8", MiniBf(WORD_MAX))
 
-    @test "9.999999990 * 10^9" == test_to_string_sci(mul(MiniBf(WORD_MAX), MiniBf(10)))
-    @test "9.9999999900 * 10^10" == test_to_string_sci(mul(MiniBf(WORD_MAX), MiniBf(100)))
-    @test "9.99999998000000001 * 10^17" ==
-        test_to_string_sci(mul(MiniBf(WORD_MAX), MiniBf(WORD_MAX)))
+    test_to_string_sci("9.999999990 * 10^9", mul(MiniBf(WORD_MAX), MiniBf(10)))
+    test_to_string_sci("9.9999999900 * 10^10", mul(MiniBf(WORD_MAX), MiniBf(100)))
+    test_to_string_sci("9.99999998000000001 * 10^17", mul(MiniBf(WORD_MAX), MiniBf(WORD_MAX)))
 end
 
 @testset "to_string" begin
