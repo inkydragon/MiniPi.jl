@@ -140,13 +140,13 @@ function usub(x::MiniBf, y::MiniBf, p=zero(UInt64))
 
     if p == 0
         # Default value. No trunction.
-        p = TL
+        p = UInt64(TL)
     else
         # Increase precision
         p += EXTRA_PRECISION
     end
 
-    if TL > p
+    if TL > Int(p)
         bot = top - p
         TL = p
     end
