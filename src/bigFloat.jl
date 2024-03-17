@@ -140,7 +140,6 @@ function Base.:(==)(x::MiniBf, y::MiniBf)
 
         x.sign == y.sign &&
             x.exp == y.exp &&
-            x.len == y.len &&
             # NOTE: x.tab may contains extra 0x0 at end
             x.tab[1:x.len] == y.tab[1:y.len]
     else
