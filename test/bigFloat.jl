@@ -216,6 +216,12 @@ end
     @test "3.1415929203" == test_to_string(div(MiniBf(355), MiniBf(113), zero(UInt64)), 10+1)
     @test "3.141592920353982370" == test_to_string(div(MiniBf(355), MiniBf(113), zero(UInt64)), 20+1)
     @test "3.141592920353982370" == test_to_string(div(MiniBf(355), MiniBf(113), zero(UInt64)), 40+1)
+    
+    to_digits = 40
+    p = (to_digits + 8) / 9
+    p = trunc(UInt64, p)
+    @test_broken "3.1415929203539823008849557522123893805309" ==
+        test_to_string(div(MiniBf(355), MiniBf(113), p), to_digits+1)
 end
 
 
