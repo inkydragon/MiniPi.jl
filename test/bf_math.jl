@@ -75,6 +75,7 @@ end
         @test neg_baseline_sum == uadd(neg_x, neg_y, p)
         @test neg_baseline_sum == uadd(neg_y, neg_x, p)
     end
+    test_uadd_commutative(2, 0x3, UInt64(9))
 
     test_x = Int64[
         1:10...,
