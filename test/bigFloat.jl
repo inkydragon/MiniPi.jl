@@ -28,6 +28,7 @@ end
     @test MiniBf() == MiniBf(true, 0, 0x0000000000000000, UInt32[])
     @test MiniBf(1) != MiniBf()
     @test MiniBf(10) != MiniBf(1)
+    @test MiniBf(10) != mul(MiniBf(WORD_MAX), MiniBf(100))
 
     #= MiniBf(::MiniBf) =#
     @test MiniBf(MiniBf()) == MiniBf()
