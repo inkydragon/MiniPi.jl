@@ -310,3 +310,56 @@ function to_string_sci!(u8::Vector{UInt8}, x::MiniBf, to_digits::Int64)
 
     return str
 end
+
+"""
+    to_string(x::MiniBf, to_digits::Int64)
+
+Convert this number to a string. Auto-select format type.
+"""
+function to_string(x::MiniBf, to_digits::Int64)
+    if iszero(x.len)
+        return "0."
+    end
+
+    mag = x.exp + x.len
+
+    u8 = zeros(UInt8, to_digits)
+    # Use scientific notation if out of range.
+    if mag > 1 || mag < 0
+        return to_string_sci!(u8, x, to_digits)
+    end
+
+    # Convert
+    expo = to_string_trimmed!(u8, x, to_digits)
+    str = String(Char.(u8))
+
+    # Less than 1
+    if iszero(mag)
+        if x.sign
+            return "0." * str
+        else
+            return "-0." * str
+        end
+    end
+
+    # Get a string with the to_digits before the decimal place.
+    before_decimal = string(x.tab[x.len])
+
+    # Nothing after the decimal place.
+    if expo >= 0
+        if x.sign
+            return before_decimal * "."
+        else
+            return "-" * before_decimal * "."
+        end
+    end
+
+    # Get to_digits after the decimal place.
+    after_decimal = str[length(str) + expo + 1:end]
+
+    if x.sign
+        return before_decimal * "." * after_decimal
+    else
+        return "-" * before_decimal * "." * after_decimal
+    end
+end
