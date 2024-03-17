@@ -159,8 +159,8 @@ Compare function that ignores the sign.
 This is needed to determine which direction subtractions will go.
 """
 function ucmp(x::MiniBf, y::MiniBf)
-    magA = x.exp + x.len
-    magB = y.exp + y.len
+    magA = x.exp + Int(x.len)
+    magB = y.exp + Int(y.len)
     
     if magA > magB
         return 1
@@ -168,7 +168,7 @@ function ucmp(x::MiniBf, y::MiniBf)
         return -1
     end
 
-    mag = Int(magA)
+    mag = magA
     while mag >= x.exp || mag >= y.exp
         wordA = word_at(x, mag)
         wordB = word_at(y, mag)
