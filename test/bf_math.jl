@@ -155,24 +155,28 @@ end
     @test sub(MiniBf(-1), MiniBf(1)) == MiniBf(-2)
 end
 
-@testset "mul(::MiniBf, ::MiniBf)" begin
+@testset "mul(::MiniBf, ::MiniBf, ::UInt64)" begin
     @test mul(MiniBf(0), MiniBf(0)) == MiniBf(0)
     @test mul(MiniBf(1), MiniBf(0)) == MiniBf(0)
     @test mul(MiniBf(0), MiniBf(-1)) == MiniBf(0)
     @test mul(MiniBf(1), MiniBf(1)) == MiniBf(1)
     @test mul(MiniBf(-1), MiniBf(-1)) == MiniBf(1)
 
-    function test_mul_commutative(i64_x, i64_y)
-        @assert i64_x >= 0 && i64_y >= 0
+    function test_mul_commutative(i64_x, u64_y, p=0)
+        @assert i64_x >= 0 && u64_y >= 0
+        i64_y = Int(u64_y)
         x = MiniBf(i64_x)
         neg_x = MiniBf(-i64_x)
         y = MiniBf(i64_y)
         neg_y = MiniBf(-i64_y)
+        p = UInt64(p)
 
-        @test mul(x, y) == mul(y, x)
-        @test mul(neg_x, y) == mul(x, neg_y)
-        @test mul(neg_x, y) == mul(neg_y, x)
-        @test mul(neg_x, neg_y) == mul(neg_x, neg_y)
+        @testset "mul($i64_x, $i64_y, $(Int(p)))" begin
+            @test mul(x, y, p) == mul(y, x, p)
+            @test mul(neg_x, y, p) == mul(x, neg_y, p)
+            @test mul(neg_x, y, p) == mul(neg_y, x, p)
+            @test mul(neg_x, neg_y, p) == mul(neg_x, neg_y, p)
+        end
     end
     test_mul_commutative(x, y::Unsigned) = test_mul_commutative(x, Int(y))
     test_x = Int64[
@@ -181,7 +185,8 @@ end
         rand(UInt16, 10)...,
         rand(1:WORD_MAX, 10)...,
     ]
-    for i64_x in test_x
+    for i64_x in test_x,
+        p = [0, 18]
         x = MiniBf(i64_x)
         neg_x = MiniBf(-i64_x)
 
@@ -190,10 +195,10 @@ end
         @test mul(neg_x, MiniBf(0)) == MiniBf(0)
         @test mul(neg_x, MiniBf(1)) == neg_x
 
-        test_mul_commutative(i64_x, 0x0)
-        test_mul_commutative(i64_x, 0x1)
-        test_mul_commutative(i64_x, 0x2)
-        test_mul_commutative(i64_x, WORD_MAX)
+        test_mul_commutative(i64_x, 0x0, p)
+        test_mul_commutative(i64_x, 0x1, p)
+        test_mul_commutative(i64_x, 0x2, p)
+        test_mul_commutative(i64_x, WORD_MAX, p)
     end
 end
 
