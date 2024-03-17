@@ -255,6 +255,16 @@ const test_cpp_rcp_ref = String[
 
     for (i, val) in enumerate(test_cpp_rcp_ref)
         test_to_string(val, rcp(MiniBf(i), zero(UInt64)))
+
+        if i == 1
+            continue
+        elseif 2 <= i <= 10
+            prefix = 2  # "0."
+            test_to_string(val[1:11+prefix], rcp(MiniBf(i), zero(UInt64)), 11)
+        else
+            prefix = 3  # "0.0"
+            test_to_string(val[1:11+prefix], rcp(MiniBf(i), zero(UInt64)), 11)
+        end
     end
 end
 
