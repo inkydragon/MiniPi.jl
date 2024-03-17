@@ -138,7 +138,7 @@ function usub(x::MiniBf, y::MiniBf, p=zero(UInt64))
     # Truncate precision
     TL = top - bot
 
-    if p == 0
+    if iszero(p)
         # Default value. No trunction.
         p = UInt64(TL)
     else
@@ -247,7 +247,7 @@ Depend on: [`multiply_fft!`](@ref)
 """
 function mul(x::MiniBf, y::MiniBf, p=zero(UInt64))
     # Either operand is zero.
-    if x.len == 0 || y.len == 0
+    if iszero(x.len) || iszero(y.len)
         return MiniBf()
     end
 
