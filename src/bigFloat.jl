@@ -77,12 +77,6 @@ function MiniBf(x::Integer)
 end
 
 
-#= String Conversion =#
-function to_string_trimmed(x::MiniBf, digits) end
-function to_string(bf::MiniBf, digits=0) end
-function to_string_sci(bf::MiniBf, digits=0) end
-
-
 #= Getter =#
 """
     Base.precision(x::MiniBf)
