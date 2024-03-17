@@ -8,7 +8,8 @@ const WORD_MAX = UInt32(1_000_000_000 - 1)
 
 function check_word_size(x)
     if x >= WORD_SIZE
-        throw(DomainError("x too large. Only impl MiniBf() for x < WORD_SIZE($WORD_SIZE)"))
+        err_msg = "Only impl MiniBf() for x($x) < WORD_SIZE($WORD_SIZE)"
+        throw(DomainError("x too large. $err_msg"))
     end
 end
 
