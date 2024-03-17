@@ -26,6 +26,8 @@ end
     #= MiniBf() =#
     @test MiniBf() == MiniBf()
     @test MiniBf() == MiniBf(true, 0, 0x0000000000000000, UInt32[])
+    @test MiniBf(1) != MiniBf()
+    @test MiniBf(10) != MiniBf(1)
 
     #= MiniBf(::MiniBf) =#
     @test MiniBf(MiniBf()) == MiniBf()
