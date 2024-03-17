@@ -427,6 +427,22 @@ const test_cpp_div_ref = String[
     to_digits += 1
     p = (to_digits + 8) / 9
     p = trunc(UInt64, p)
-    @test_broken "3.1415929203539823008849557522123893805309" ==
-        to_string(div(MiniBf(355), MiniBf(113), p), to_digits)
+
+    @testset "rcp(MiniBf(113), UInt64(1))" begin
+        p = UInt64(1)
+        x = MiniBf(113)
+        r0 = rcp(MiniBf(113), zero(UInt64))
+        @test "0.008849557522123894" == to_string(r0, to_digits)
+        r0x = mul(r0, x, p)
+        @test "1.000000000000000022" == to_string(r0x, to_digits)
+        sub1 = sub(r0x, MiniBf(1), UInt64(1))
+        @test "2.2 * 10^-17" == to_string(sub1, to_digits)
+        mulr0 = mul(sub1, r0, p)
+        @test "1.94690265486725668 * 10^-19" == to_string(mulr0, to_digits)
+        r1 = sub(r0, mulr0, p)
+        @test "0.008849557522123893805309735" == to_string(r1, to_digits)
+    end
+
+    @test "0.008849557522123893805309735" ==
+        to_string(rcp(MiniBf(113), UInt64(1)), to_digits)
 end
