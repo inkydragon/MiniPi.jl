@@ -72,16 +72,16 @@ function uadd(x::MiniBf, y::MiniBf, p=zero(UInt64))
     # Target length
     TL = top - bot
 
-    if p == 0
+    if iszero(p)
         # Default value. No truncation.
-        p = TL
+        p = UInt64(TL)
     else
         # Increase precision
         p += EXTRA_PRECISION
     end
 
     # Perform precision truncation.
-    if TL > p
+    if TL > Int(p)
         bot = top - p
         TL = p
     end
