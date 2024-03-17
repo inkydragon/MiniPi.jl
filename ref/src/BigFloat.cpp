@@ -648,6 +648,17 @@ int main() {
     z = x.div(y, p);
     printf("z.len=%ld;  \n", z.get_precision());
     std::cout << z.to_string(digits) << std::endl;
+    
+    puts("rcp");
+    for (int i=1; i<=42; i++) {
+        digits = 0;
+        p = 0;
+        x = Mini_Pi::BigFloat(i, true);
+        z = x.rcp(p);
+        std::cout
+            << "\"" << z.to_string(digits) << "\","
+            << std::endl;
+    }
 
     return 0;
 }
