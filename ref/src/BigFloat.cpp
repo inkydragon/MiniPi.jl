@@ -633,15 +633,21 @@ BigFloat invsqrt(uint32_t x, size_t p){
 
 #include <iostream>
 int main() {
-    Mini_Pi::BigFloat z;
-    std::string str;
+    Mini_Pi::BigFloat z, x, y;
+    size_t digits = 40;
+    digits++;
+    size_t p = (digits + 8) / 9;
+    // std::string str;
 
-    std::cout << z.to_string(1) << std::endl;
-    std::cout << z.to_string(0) << std::endl;
-    
-    z = Mini_Pi::BigFloat(0x1, true);
-    std::cout << z.to_string(1) << std::endl;
-    std::cout << z.to_string(0) << std::endl;
+    Mini_Pi::ensure_FFT_tables(2*p);
+
+    // digits = 4;
+    // p = 0;
+    x = Mini_Pi::BigFloat(355, true);
+    y = Mini_Pi::BigFloat(113, true);
+    z = x.div(y, p);
+    printf("z.len=%ld;  \n", z.get_precision());
+    std::cout << z.to_string(digits) << std::endl;
 
     return 0;
 }
