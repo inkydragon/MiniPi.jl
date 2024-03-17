@@ -630,3 +630,19 @@ BigFloat invsqrt(uint32_t x, size_t p){
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 }
+
+#include <iostream>
+int main() {
+    Mini_Pi::BigFloat z;
+    std::string str;
+
+    std::cout << z.to_string(1) << std::endl;
+    std::cout << z.to_string(0) << std::endl;
+    
+    z = Mini_Pi::BigFloat(0x1, true);
+    std::cout << z.to_string(1) << std::endl;
+    std::cout << z.to_string(0) << std::endl;
+
+    return 0;
+}
+//  g++ -o bf BigFloat.cpp FFT.cpp && ./bf

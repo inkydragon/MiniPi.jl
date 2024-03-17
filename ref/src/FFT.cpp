@@ -39,7 +39,7 @@ void print_vec_cf64(std::vector<std::complex<double>> vec) {
     puts("");
 }
 
-int main() {
+int main0() {
     auto k = 2;
     
     for (int k=1; k <= 3; k++) {
@@ -71,3 +71,4 @@ int main() {
 
     return 0;
 }
+// g++ -o fft FFT.cpp FFT.h && ./fft
