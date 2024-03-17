@@ -212,6 +212,10 @@ end
 end
 
 @testset "to_string(to_digits)" begin
+    p = zero(UInt64)
+    test_to_string("1.00000000000000000000 * 10^-16", 
+        div(div(MiniBf(1), MiniBf(1_00_000_000), p), MiniBf(1_00_000_000), p), 0)
+
     # digits
     test_to_string("3.14159", div(MiniBf(355), MiniBf(113), zero(UInt64)), 5+1)
     test_to_string("3.1415929203", div(MiniBf(355), MiniBf(113), zero(UInt64)), 10+1)

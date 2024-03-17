@@ -292,7 +292,7 @@ function to_string_sci!(u8::Vector{UInt8}, x::MiniBf, to_digits::Int64)
     str = str[leading_zeros+1:end]
 
     # Insert decimal place
-    expo = length(str) - 1
+    expo += length(str) - 1
     str = str[1] * "." * str[2:end]
 
     # Add exponent
