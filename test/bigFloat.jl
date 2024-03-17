@@ -194,6 +194,16 @@ end
     @test "9.9999999900 * 10^10" == test_to_string(mul(MiniBf(WORD_MAX), MiniBf(100)))
     @test "9.99999998000000001 * 10^17" ==
         test_to_string(mul(MiniBf(WORD_MAX), MiniBf(WORD_MAX)))
+    
+    # < 1
+    @test "0.100000000000000000" == test_to_string(div(MiniBf(1), MiniBf(10), zero(UInt64)))
+    @test "0.000001000000000000" == test_to_string(div(MiniBf(1), MiniBf(1000_000), zero(UInt64)))
+    @test "0.000000001000000001" == test_to_string(div(MiniBf(1), MiniBf(WORD_MAX), zero(UInt64)))
+    @test "0.000000001000000001" == test_to_string(div(MiniBf(1), MiniBf(WORD_MAX), zero(UInt64)))
+
+    # pi
+    @test "3.142857142857142304" == test_to_string(div(MiniBf(22), MiniBf(7), zero(UInt64)))
+    @test "3.141592920353982370" == test_to_string(div(MiniBf(355), MiniBf(113), zero(UInt64)))
 end
 
 
