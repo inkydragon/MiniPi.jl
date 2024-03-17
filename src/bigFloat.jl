@@ -262,3 +262,51 @@ function to_string_trimmed!(str::Vector{UInt8}, x::MiniBf, to_digits::Int64)
     resize!(str, to_digits)
     return expo
 end
+
+"""
+    to_string_sci!(u8::Vector{UInt8}, x::MiniBf, to_digits::Int64)
+
+Convert to string in scientific notation.
+"""
+function to_string_sci!(u8::Vector{UInt8}, x::MiniBf, to_digits::Int64)
+    str_len = 0
+
+    # Convert to string in scientific notation.
+    if iszero(x.len)
+        str_len = 2
+        resize!(u8, str_len)
+        u8[1:str_len] = UInt8['0', '.']
+
+        return String(Char.(u8))
+    end
+
+    # Convert
+    expo = to_string_trimmed!(u8, x, to_digits)
+    str = String(Char.(u8))
+
+    # Strip leading zeros.
+    leading_zeros = 0
+    for c in str
+        if c != '0'
+            break
+        end
+        leading_zeros += 1
+    end
+    str = str[leading_zeros+1:end]
+
+    # Insert decimal place
+    expo = length(str) - 1
+    str = str[1] * "." * str[2:end]
+
+    # Add exponent
+    if expo != 0
+        str *= " * 10^" * string(expo)
+    end
+
+    # Add sign
+    if !x.sign
+        str = "-" * str
+    end
+
+    return str
+end

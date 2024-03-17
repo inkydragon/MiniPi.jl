@@ -4,7 +4,7 @@ import MiniPi:
     precision, exponent,
     ucmp,
     # String Conversion
-    to_string_trimmed!,
+    to_string_trimmed!, to_string_sci!,
     # Arithmetic
     negate!, mul, uadd, usub, add, sub,
     rcp, div
@@ -159,6 +159,24 @@ end
     @test (0, "000000009999999990") == test_to_string_trimmed(mul(MiniBf(WORD_MAX), MiniBf(10)))
     str = string(Int(WORD_MAX) * Int(WORD_MAX))
     @test (0, str) == test_to_string_trimmed(mul(MiniBf(WORD_MAX), MiniBf(WORD_MAX)))
+end
+
+@testset "to_string_sci!" begin
+    function test_to_string_sci(x, to_digits=0)
+        u8 = zeros(UInt8, to_digits)
+        to_string_sci!(u8, x, to_digits)
+    end
+
+    @test "0." == test_to_string_sci(MiniBf(0))
+    @test "1." == test_to_string_sci(MiniBf(1))
+    @test "2." == test_to_string_sci(MiniBf(2))
+    @test "9.99999998 * 10^8" == test_to_string_sci(MiniBf(WORD_MAX-1))
+    @test "9.99999999 * 10^8" == test_to_string_sci(MiniBf(WORD_MAX))
+
+    @test "9.999999990 * 10^9" == test_to_string_sci(mul(MiniBf(WORD_MAX), MiniBf(10)))
+    @test "9.9999999900 * 10^10" == test_to_string_sci(mul(MiniBf(WORD_MAX), MiniBf(100)))
+    @test "9.99999998000000001 * 10^17" ==
+        test_to_string_sci(mul(MiniBf(WORD_MAX), MiniBf(WORD_MAX)))
 end
 
 
