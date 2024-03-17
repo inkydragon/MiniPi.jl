@@ -221,7 +221,7 @@ function to_string_trimmed!(str::Vector{UInt8}, x::MiniBf, to_digits::Int64)
         words = div(to_digits + 17, 9)
         if words < len
             chop = len - words
-            expo += chop
+            expo += Int64(chop)
             len = words
             idx_chop = chop
         end
@@ -247,7 +247,7 @@ function to_string_trimmed!(str::Vector{UInt8}, x::MiniBf, to_digits::Int64)
     # Count leading zeros
     leading_zeros = 0
     for i in 1:str_len
-        if str[i] != '0'
+        if str[i] != UInt8('0')
             break
         end
         leading_zeros += 1
@@ -257,9 +257,9 @@ function to_string_trimmed!(str::Vector{UInt8}, x::MiniBf, to_digits::Int64)
     # Truncate
     if to_digits < str_len
         expo += str_len - to_digits
+        resize!(str, to_digits)
     end
 
-    resize!(str, to_digits)
     return expo
 end
 
