@@ -117,11 +117,14 @@ This function is mathematically equal to:
 TODO: use getindex
 """
 function word_at(x::MiniBf, mag::Int64)
-    if mag < x.exp || mag >= (x.exp+x.len)
+    @assert length(x.tab) >= x.len
+
+    idx = Int(mag - x.exp)
+    if idx < 0 || idx >= x.len
         return 0
     end
 
-    return x.tab[Int(mag - x.exp) + 1]
+    return x.tab[idx + 1]
 end
 
 
