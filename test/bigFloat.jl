@@ -204,6 +204,12 @@ end
     # pi
     @test "3.142857142857142304" == test_to_string(div(MiniBf(22), MiniBf(7), zero(UInt64)))
     @test "3.141592920353982370" == test_to_string(div(MiniBf(355), MiniBf(113), zero(UInt64)))
+    
+    # digits
+    @test "3.14159" == test_to_string(div(MiniBf(355), MiniBf(113), zero(UInt64)), 5+1)
+    @test "3.1415929203" == test_to_string(div(MiniBf(355), MiniBf(113), zero(UInt64)), 10+1)
+    @test "3.141592920353982370" == test_to_string(div(MiniBf(355), MiniBf(113), zero(UInt64)), 20+1)
+    @test "3.141592920353982370" == test_to_string(div(MiniBf(355), MiniBf(113), zero(UInt64)), 40+1)
 end
 
 
