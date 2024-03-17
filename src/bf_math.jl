@@ -372,10 +372,10 @@ function rcp(x::MiniBf, p::UInt64)
     # Half the precision
     s = div(p, 2) + 1
     if p == 1
-        s = 0
+        s = UInt64(0)
     end
     if p == 2
-        s = 1
+        s = UInt64(1)
     end
 
     # Recurse at half the precision
