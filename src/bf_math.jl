@@ -148,7 +148,7 @@ function usub(x::MiniBf, y::MiniBf, p=zero(UInt64))
     end
 
     if TL > Int(p)
-        bot = top - p
+        bot = top - Int(p)
         TL = p
     end
 
