@@ -637,6 +637,7 @@ int main() {
     size_t digits = 40;
     digits++;
     size_t p = (digits + 8) / 9;
+    uint64_t word_max = 1000000000 - 1;
     // std::string str;
 
     Mini_Pi::ensure_FFT_tables(2*p);
@@ -648,7 +649,21 @@ int main() {
     z = x.div(y, p);
     printf("z.len=%ld;  \n", z.get_precision());
     std::cout << z.to_string(digits) << std::endl;
-    
+
+#if 1
+    puts("mul");
+    for (int i=1; i<=11; i++) {
+        digits = 0;
+        p = 0;
+        x = Mini_Pi::BigFloat(i, true).mul(word_max-1);
+        y = Mini_Pi::BigFloat(i+1, true).mul(word_max-1);
+        z = x.mul(y, p);
+        std::cout
+            << "\"" << x.to_string(digits) << "\","
+            << std::endl;
+    }
+#endif
+
 #if 0
     puts("rcp");
     for (int i=1; i<=42; i++) {
@@ -662,6 +677,7 @@ int main() {
     }
 #endif
 
+#if 0
     puts("div");
     for (int i=1; i<=42; i++) {
         digits = 0;
@@ -673,6 +689,7 @@ int main() {
             << "\"" << z.to_string(digits) << "\","
             << std::endl;
     }
+#endif
 
     return 0;
 }

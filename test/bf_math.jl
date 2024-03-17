@@ -21,6 +21,20 @@ import MiniPi:
     end
 end
 
+const test_cpp_mul_ref = String[
+    "999999998.",
+    "1.999999996 * 10^9",
+    "2.999999994 * 10^9",
+    "3.999999992 * 10^9",
+    "4.999999990 * 10^9",
+    "5.999999988 * 10^9",
+    "6.999999986 * 10^9",
+    "7.999999984 * 10^9",
+    "8.999999982 * 10^9",
+    "9.999999980 * 10^9",
+    "1.0999999978 * 10^10",
+]
+
 @testset "mul" begin
     @test mul(MiniBf(0), 0x0) == MiniBf()
     @test mul(MiniBf(1), 0x0) == MiniBf()
@@ -51,6 +65,13 @@ end
         test_commutative(x, 0x1)
         test_commutative(x, 0x2)
         test_commutative(x, WORD_MAX)
+    end
+    
+    for (i, val) in enumerate(test_cpp_mul_ref)
+        @testset "mul($i, WORD_MAX-1)" begin
+            x = mul(MiniBf(i), UInt32(WORD_MAX-1))
+            test_to_string(val, x)
+        end
     end
 end
 
