@@ -184,49 +184,46 @@ end
     test_to_string_sci("9.99999998000000001 * 10^17", mul(MiniBf(WORD_MAX), MiniBf(WORD_MAX)))
 end
 
+function test_to_string(ref, x, to_digits=0)
+    @test ref == to_string(x, to_digits)
+    x == MiniBf(0) && return
+
+    @test "-" * ref == to_string(negate!(x), to_digits)
+end
+
 @testset "to_string" begin
-    function test_to_string(x, to_digits=0)
-        to_string(x, to_digits)
-    end
+    test_to_string("0.", MiniBf(0))
+    test_to_string("1.", MiniBf(1))
+    test_to_string("2.", MiniBf(2))
+    test_to_string("999999998.", MiniBf(WORD_MAX-1))
+    test_to_string("999999999.", MiniBf(WORD_MAX))
+    test_to_string("9.999999990 * 10^9", mul(MiniBf(WORD_MAX), MiniBf(10)))
+    test_to_string("9.9999999900 * 10^10", mul(MiniBf(WORD_MAX), MiniBf(100)))
+    test_to_string("9.99999998000000001 * 10^17", mul(MiniBf(WORD_MAX), MiniBf(WORD_MAX)))
 
-    @test "0." == test_to_string(MiniBf(0))
-    @test "1." == test_to_string(MiniBf(1))
-    @test "2." == test_to_string(MiniBf(2))
-    @test "999999998." == test_to_string(MiniBf(WORD_MAX-1))
-    @test "999999999." == test_to_string(MiniBf(WORD_MAX))
-
-    @test "9.999999990 * 10^9" == test_to_string(mul(MiniBf(WORD_MAX), MiniBf(10)))
-    @test "9.9999999900 * 10^10" == test_to_string(mul(MiniBf(WORD_MAX), MiniBf(100)))
-    @test "9.99999998000000001 * 10^17" ==
-        test_to_string(mul(MiniBf(WORD_MAX), MiniBf(WORD_MAX)))
-    
     # < 1
-    @test "0.100000000000000000" == test_to_string(div(MiniBf(1), MiniBf(10), zero(UInt64)))
-    @test "0.000001000000000000" == test_to_string(div(MiniBf(1), MiniBf(1000_000), zero(UInt64)))
-    @test "0.000000001000000001" == test_to_string(div(MiniBf(1), MiniBf(WORD_MAX), zero(UInt64)))
-    @test "0.000000001000000001" == test_to_string(div(MiniBf(1), MiniBf(WORD_MAX), zero(UInt64)))
+    test_to_string("0.100000000000000000", div(MiniBf(1), MiniBf(10), zero(UInt64)))
+    test_to_string("0.000001000000000000", div(MiniBf(1), MiniBf(1000_000), zero(UInt64)))
+    test_to_string("0.000000001000000001", div(MiniBf(1), MiniBf(WORD_MAX), zero(UInt64)))
+    test_to_string("0.000000001000000001", div(MiniBf(1), MiniBf(WORD_MAX), zero(UInt64)))
 
     # pi
-    @test "3.142857142857142304" == test_to_string(div(MiniBf(22), MiniBf(7), zero(UInt64)))
-    @test "3.141592920353982370" == test_to_string(div(MiniBf(355), MiniBf(113), zero(UInt64)))
+    test_to_string("3.142857142857142304", div(MiniBf(22), MiniBf(7), zero(UInt64)))
+    test_to_string("3.141592920353982370", div(MiniBf(355), MiniBf(113), zero(UInt64)))
 end
 
 @testset "to_string(to_digits)" begin
-    function test_to_string(x, to_digits=0)
-        to_string(x, to_digits)
-    end
-
     # digits
-    @test "3.14159" == test_to_string(div(MiniBf(355), MiniBf(113), zero(UInt64)), 5+1)
-    @test "3.1415929203" == test_to_string(div(MiniBf(355), MiniBf(113), zero(UInt64)), 10+1)
-    @test "3.141592920353982370" == test_to_string(div(MiniBf(355), MiniBf(113), zero(UInt64)), 20+1)
-    @test "3.141592920353982370" == test_to_string(div(MiniBf(355), MiniBf(113), zero(UInt64)), 40+1)
-    
+    test_to_string("3.14159", div(MiniBf(355), MiniBf(113), zero(UInt64)), 5+1)
+    test_to_string("3.1415929203", div(MiniBf(355), MiniBf(113), zero(UInt64)), 10+1)
+    test_to_string("3.141592920353982370", div(MiniBf(355), MiniBf(113), zero(UInt64)), 20+1)
+    test_to_string("3.141592920353982370", div(MiniBf(355), MiniBf(113), zero(UInt64)), 40+1)
+
     to_digits = 40
     p = (to_digits + 8) / 9
     p = trunc(UInt64, p)
     @test_broken "3.1415929203539823008849557522123893805309" ==
-        test_to_string(div(MiniBf(355), MiniBf(113), p), to_digits+1)
+        to_string(div(MiniBf(355), MiniBf(113), p), to_digits+1)
 end
 
 
