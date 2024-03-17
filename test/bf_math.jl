@@ -422,4 +422,11 @@ const test_cpp_div_ref = String[
         test_to_string(val, div(MiniBf(i), MiniBf(i+1), zero(UInt64)))
         test_to_string(val[1:11+2], div(MiniBf(i), MiniBf(i+1), zero(UInt64)), 11)
     end
+    
+    to_digits = 40
+    to_digits += 1
+    p = (to_digits + 8) / 9
+    p = trunc(UInt64, p)
+    @test_broken "3.1415929203539823008849557522123893805309" ==
+        to_string(div(MiniBf(355), MiniBf(113), p), to_digits)
 end
