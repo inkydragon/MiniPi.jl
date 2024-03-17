@@ -650,13 +650,30 @@ int main() {
     printf("z.len=%ld;  \n", z.get_precision());
     std::cout << z.to_string(digits) << std::endl;
 
-#if 1
+#if 0
     puts("mul(u32)");
     for (int i=1; i<=42; i++) {
         digits = 0;
         p = 0;
         x = Mini_Pi::BigFloat(i, true).mul(word_max-1);
         z = x.mul(word_max);
+        std::cout
+            << "(\"" 
+                << x.to_string(digits) << "\", \""
+                << z.to_string(digits)
+            << "\"),"
+            << std::endl;
+    }
+#endif
+
+#if 1
+    puts("mul(bf, bf)");
+    for (int i=1; i<=23; i++) {
+        digits = 0;
+        p = 0;
+        x = Mini_Pi::BigFloat(i, true).mul(123456789);
+        y = Mini_Pi::BigFloat(i+1, true).mul(1);
+        z = x.mul(y, p);
         std::cout
             << "(\"" 
                 << x.to_string(digits) << "\", \""
