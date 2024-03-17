@@ -28,25 +28,26 @@ function mul(x::MiniBf, y::UInt32)
         # 0
         return z
     end
-    
+
     # Compute basic fields.
     z.sign = x.sign
     z.exp  = x.exp
     z.len  = x.len
-    
+
     # Allocate mantissa
     z.tab = zeros(UInt32, z.len + 1)
-    
+
     carry = zero(UInt64)
     for c in one(UInt64):(x.len)
         # Multiply and add to carry
-        carry += x.tab[c] * y
+        # NOTE: Must be calculated with UInt 
+        carry += UInt64(x.tab[c]) * UInt64(y)
         # Store bottom 9 digits
-        z.tab[c] = carry % WORD_SIZE
+        z.tab[c] = UInt32(carry % WORD_SIZE)
         # Shift down the carry
         carry = div(carry, WORD_SIZE)
     end
-    
+
     # Carry out
     if carry != 0
         z.len += 1
