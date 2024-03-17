@@ -108,6 +108,13 @@ end
     # gt >
     @test 1 == ucmp(MiniBf(1), MiniBf(0))
     ucmp_gt(1, 0)
+    for i in 1:10
+        ucmp_gt(i, 0)
+        ucmp_gt(i+1, i)
+    end
+
+    y = div(MiniBf(1), MiniBf(1_00_000_000), UInt64(0))
+    @test 1 == ucmp(MiniBf(1), MiniBf(y))
 
     # eq ==
     @test 0 == ucmp(MiniBf(), MiniBf())
