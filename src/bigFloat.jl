@@ -186,3 +186,79 @@ function ucmp(x::MiniBf, y::MiniBf)
     
     return 0
 end
+
+
+#= String Conversion =#
+
+"""
+    to_string_trimmed!(str::Vector{UInt8}, x::MiniBf, to_digits::Int64)
+
+Converts this object to a string with "digits" significant figures.
+
+After calling this function, the following expression is equal to the
+numeric value of this object. (after truncation of precision)
+    str + " * 10^" + (return value)
+"""
+function to_string_trimmed!(str::Vector{UInt8}, x::MiniBf, to_digits::Int64)
+    str_len = 0
+    if iszero(x.len)
+        resize!(str, 1)
+        str[1] = '0'
+        expo = 0
+        return expo
+    end
+
+    # Collect operands
+    expo = x.exp
+    len = x.len
+
+    idx_chop = 0
+    if iszero(to_digits)
+        # Use all to_digits.
+        to_digits = len * 9
+    else
+        # Truncate precision
+        words = div(to_digits + 17, 9)
+        if words < len
+            chop = len - words
+            expo += chop
+            len = words
+            idx_chop = chop
+        end
+    end
+    expo *= 9
+
+    # Alloc big enough buffer
+    resize!(str, len*9)
+    # Build string
+    buffer = UInt8['0','1','2','3','4','5','6','7','8']
+    c = len
+    while c > 0
+        c -= 1
+        word = x.tab[idx_chop+c+1]
+        for i in 9:-1:1
+            buffer[i] = UInt8(word % 10) + '0'
+            word = div(word, 10)
+        end
+        str[(str_len+1):(str_len+9)] = buffer
+        str_len += 9
+    end
+
+    # Count leading zeros
+    leading_zeros = 0
+    for i in 1:str_len
+        if str[i] != '0'
+            break
+        end
+        leading_zeros += 1
+    end
+    to_digits += leading_zeros
+
+    # Truncate
+    if to_digits < str_len
+        expo += str_len - to_digits
+    end
+
+    resize!(str, to_digits)
+    return expo
+end

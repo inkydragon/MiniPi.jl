@@ -3,6 +3,8 @@ import MiniPi:
     WORD_SIZE, WORD_MAX,
     precision, exponent,
     ucmp,
+    # String Conversion
+    to_string_trimmed!,
     # Arithmetic
     negate!, mul, uadd, usub, add, sub,
     rcp, div
@@ -137,6 +139,28 @@ end
         ucmp_lt(x, x+1)
     end
 end
+
+
+#= String Conversion =#
+
+@testset "to_string_trimmed!" begin
+    function test_to_string_trimmed(x, to_digits=0)
+        u8 = zeros(UInt8, to_digits)
+        expo = to_string_trimmed!(u8, x, to_digits)
+        expo, String(Char.(u8))
+    end
+
+    @test (0, "0") == test_to_string_trimmed(MiniBf(0))
+    @test (0, "000000001") == test_to_string_trimmed(MiniBf(1))
+    @test (0, "000000002") == test_to_string_trimmed(MiniBf(2))
+    @test (0, "999999998") == test_to_string_trimmed(MiniBf(WORD_MAX-1))
+    @test (0, "999999999") == test_to_string_trimmed(MiniBf(WORD_MAX))
+
+    @test (0, "000000009999999990") == test_to_string_trimmed(mul(MiniBf(WORD_MAX), MiniBf(10)))
+    str = string(Int(WORD_MAX) * Int(WORD_MAX))
+    @test (0, str) == test_to_string_trimmed(mul(MiniBf(WORD_MAX), MiniBf(WORD_MAX)))
+end
+
 
 @testset "negate!" begin
     @test negate!(MiniBf()) == MiniBf()
