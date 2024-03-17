@@ -314,5 +314,6 @@ const test_cpp_div_ref = String[
 
     for (i, val) in enumerate(test_cpp_div_ref)
         test_to_string(val, div(MiniBf(i), MiniBf(i+1), zero(UInt64)))
+        test_to_string(val[1:11+2], div(MiniBf(i), MiniBf(i+1), zero(UInt64)), 11)
     end
 end
