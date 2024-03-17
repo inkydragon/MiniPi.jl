@@ -83,7 +83,7 @@ function uadd(x::MiniBf, y::MiniBf, p=zero(UInt64))
 
     # Perform precision truncation.
     if TL > Int(p)
-        bot = top - p
+        bot = top - Int(p)
         TL = p
     end
 
@@ -276,7 +276,7 @@ function mul(x::MiniBf, y::MiniBf, p=zero(UInt64))
         Aexp += chop
         idx_A = chop
     end
-    
+
     idx_B = 0
     if BL > p
         chop = BL - p
@@ -371,7 +371,7 @@ function rcp(x::MiniBf, p::UInt64)
     end
 
     # Half the precision
-    s = div(p, 2) + 1
+    s = div(p, 2) + UInt64(1)
     if p == 1
         s = UInt64(0)
     end
