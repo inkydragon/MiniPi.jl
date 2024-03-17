@@ -651,15 +651,17 @@ int main() {
     std::cout << z.to_string(digits) << std::endl;
 
 #if 1
-    puts("mul");
-    for (int i=1; i<=11; i++) {
+    puts("mul(u32)");
+    for (int i=1; i<=42; i++) {
         digits = 0;
         p = 0;
         x = Mini_Pi::BigFloat(i, true).mul(word_max-1);
-        y = Mini_Pi::BigFloat(i+1, true).mul(word_max-1);
-        z = x.mul(y, p);
+        z = x.mul(word_max);
         std::cout
-            << "\"" << x.to_string(digits) << "\","
+            << "(\"" 
+                << x.to_string(digits) << "\", \""
+                << z.to_string(digits)
+            << "\"),"
             << std::endl;
     }
 #endif
