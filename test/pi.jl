@@ -17,15 +17,14 @@ end
     # (1, 1, 1)
     to_digits, p, terms = gen_dpt(0)
     P, Q, R = pi_bsr(UInt32(0), terms, p)
-    @test "-2.793657715 * 10^9" == to_string(P, to_digits)
-    @test "1.0939058860032000 * 10^16" == to_string(Q, to_digits)
-    test_to_string("5.", R, to_digits)
+    test_to_string("-2.793657715 * 10^9", P)
+    test_to_string("1.0939058860032000 * 10^16", Q)
+    test_to_string("5.", R)
 
-    to_digits = 0
     P, Q, R = pi_bsr(UInt32(1), UInt32(2), UInt64(3))
-    @test "2.54994357387 * 10^11" == to_string(P, to_digits)
-    @test "8.7512470880256000 * 10^16" == to_string(Q, to_digits)
-    test_to_string("231.", R, to_digits)
+    test_to_string("2.54994357387 * 10^11", P)
+    test_to_string("8.7512470880256000 * 10^16", Q)
+    test_to_string("231.", R)
 
     to_digits, p, terms = gen_dpt(20)
     P, Q, R = pi_bsr(UInt32(0), terms, p)
