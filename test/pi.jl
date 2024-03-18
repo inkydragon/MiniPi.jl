@@ -21,9 +21,14 @@ end
     @test "1.0939058860032000 * 10^16" == to_string(Q, to_digits)
     test_to_string("5.", R, to_digits)
 
+    to_digits = 0
+    P, Q, R = pi_bsr(UInt32(1), UInt32(2), UInt64(3))
+    @test "2.54994357387 * 10^11" == to_string(P, to_digits)
+    @test "8.7512470880256000 * 10^16" == to_string(Q, to_digits)
+    test_to_string("231.", R, to_digits)
+
     to_digits, p, terms = gen_dpt(20)
     P, Q, R = pi_bsr(UInt32(0), terms, p)
-
     @test_broken "-2.44479889433338740603253065 * 10^26" == to_string(P, to_digits)
     @test_broken "9.57304069945956794936328192000000 * 10^32" == to_string(P, to_digits)
     test_to_string("1155.", R, to_digits)
