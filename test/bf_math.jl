@@ -508,4 +508,12 @@ const test_cpp_invsqrt_ref = String[
     for (i, val) in enumerate(test_cpp_invsqrt_ref)
         test_to_string(val, invsqrt(UInt32(i),zero(UInt64)))
     end
+    
+    to_digits = 60
+    to_digits += 1
+    p = (to_digits + 8) / 9
+    p = trunc(UInt64, p)
+
+    test_to_string("0.1543033499620919102610944627639999204215524835013892035645560",
+        invsqrt(UInt32(42), p), to_digits)
 end

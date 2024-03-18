@@ -646,9 +646,9 @@ int main() {
     // p = 0;
     x = Mini_Pi::BigFloat(355, true);
     y = Mini_Pi::BigFloat(113, true);
-    z = x.div(y, p);
+    // z = x.div(y, p);
 
-    // z = y.rcp(p);
+    z = Mini_Pi::invsqrt(42, p);
 
     std::cout << z.to_string(digits) << std::endl;
 
@@ -712,7 +712,7 @@ int main() {
     }
 #endif
 
-#if 1
+#if 0
     puts("invsqrt");
     for (int i=1; i<=42; i++) {
         digits = 0;
