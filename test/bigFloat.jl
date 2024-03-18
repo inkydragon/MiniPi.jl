@@ -194,7 +194,11 @@ function test_to_string(ref, x, to_digits=0)
     @test ref == to_string(x, to_digits)
     x == MiniBf(0) && return
 
-    @test "-" * ref == to_string(negate!(x), to_digits)
+    if startswith(ref, "-")
+        @test ref[2:end] == to_string(negate!(x), to_digits)
+    else
+        @test "-" * ref == to_string(negate!(x), to_digits)
+    end
 end
 
 @testset "to_string" begin
