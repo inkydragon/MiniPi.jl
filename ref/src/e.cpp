@@ -15,6 +15,7 @@
 #include "FFT.h"
 #include "BigFloat.h"
 #include "Constants.h"
+#include <math.h>
 
 namespace Mini_Pi{
     using std::cout;

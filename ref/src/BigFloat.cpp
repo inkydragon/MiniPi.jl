@@ -632,7 +632,7 @@ BigFloat invsqrt(uint32_t x, size_t p){
 }
 
 #include <iostream>
-int main() {
+int main1() {
     Mini_Pi::BigFloat z, x, y;
     size_t digits = 60;
     digits++;

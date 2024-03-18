@@ -24,7 +24,7 @@
 #include "Constants.h"
 
 int main(){
-    size_t digits = 1000000;
+    size_t digits = 50;
 
     Mini_Pi::e (digits);
     Mini_Pi::Pi(digits);
@@ -33,3 +33,4 @@ int main(){
     system("pause");
 #endif
 }
+//  g++ -o pi *.cpp && ./pi
