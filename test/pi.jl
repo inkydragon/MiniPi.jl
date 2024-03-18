@@ -36,11 +36,12 @@ end
     test_to_string("1155.", R, to_digits)
 end
 
+const pi_50 = "3.14159265358979323846264338327950288419716939937510"
+
 @testset "Pi" begin
     @test_throws DomainError Pi(61*10^9)
 
-    to_digits, p, terms = gen_dpt(20)
+    to_digits, p, terms = gen_dpt(50)
     bf_pi = Pi(to_digits)
-
-    @test_broken "" == to_string(bf_pi, to_digits)
+    @test_broken pi_50 == to_string(bf_pi, to_digits)
 end
