@@ -34,10 +34,7 @@ function pi_bsr(a::UInt32, b::UInt32, p::UInt64)
     P0, Q0, R0 = pi_bsr(a, m, p)
     P1, Q1, R1 = pi_bsr(m, b, p)
 
-    tmp = mul(P0, Q1, p)
-    temp = mul(P1, R0, p)
-    P = add(tmp, temp, p)
-    @show to_string(tmp) to_string(temp) to_string(P) 
+    P = add(mul(P0, Q1, p), mul(P1, R0, p), p)
     Q = mul(Q0, Q1, p)
     R = mul(R0, R1, p)
 
