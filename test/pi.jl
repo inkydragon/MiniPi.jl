@@ -34,6 +34,16 @@ end
     test_to_string("-2.44479889433338740603253065 * 10^26", P, to_digits)
     test_to_string("9.57304069945956794936328192000000 * 10^32", Q, to_digits)
     test_to_string("1155.", R, to_digits)
+
+    to_digits, p, terms = gen_dpt(50)
+    P, Q, R = pi_bsr(UInt32(0), terms, p)
+    test_to_string(
+        "-5.0552984125686101746228994534091499889077848307882335805887375 * 10^61",
+        P, to_digits)
+    test_to_string(
+        "1.97949113784380161370086287723699183824180409892941594624000000000000 * 10^68",
+        Q, to_digits)
+    test_to_string("3.904125225 * 10^9", R, to_digits)
 end
 
 const pi_50 = "3.14159265358979323846264338327950288419716939937510"

@@ -79,6 +79,10 @@ void Pi(size_t digits){
     cout << "Summing Series... " << terms << " terms" << endl;
     BigFloat P, Q, R;
     Pi_BSR(P, Q, R, 0, (uint32_t)terms, p);
+    cout << P.to_string(digits) <<  endl;
+    cout << Q.to_string(digits) <<  endl;
+    cout << R.to_string(digits) <<  endl;
+    
     P = Q.mul(13591409).add(P, p);
     Q = Q.mul(4270934400);
     double time1 = wall_clock();
