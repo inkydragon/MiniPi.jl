@@ -445,4 +445,8 @@ const test_cpp_div_ref = String[
 
     @test "0.008849557522123893805309735" ==
         to_string(rcp(MiniBf(113), UInt64(1)), to_digits)
+    @test "0.008849557522123893805309734513274337" ==
+        to_string(rcp(MiniBf(113), UInt64(2)), to_digits)
+    @test "0.0088495575221238938053097345132743362831858" ==
+        to_string(rcp(MiniBf(113), UInt64(3)), to_digits)
 end
