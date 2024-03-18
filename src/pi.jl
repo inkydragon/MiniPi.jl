@@ -70,10 +70,6 @@ function Pi(to_digits::Int64, write_to_file=false)
     P, Q, R = MiniBf(), MiniBf(), MiniBf()
     @time begin
         P, Q, R = pi_bsr(UInt32(0), terms, p)
-        @info "P, Q, R"
-        to_string(P, to_digits) |> println
-        to_string(Q, to_digits) |> println
-        to_string(R, to_digits) |> println
         P = add(mul(Q, UInt32(13591409)), P, p)
         Q = mul(Q, UInt32(4270934400))
     end
