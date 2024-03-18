@@ -712,6 +712,19 @@ int main() {
     }
 #endif
 
+#if 1
+    puts("invsqrt");
+    for (int i=1; i<=42; i++) {
+        digits = 0;
+        p = 0;
+
+        z = Mini_Pi::invsqrt((uint32_t)i, p);
+        std::cout
+            << "\"" << z.to_string(digits) << "\","
+            << std::endl;
+    }
+#endif
+
     return 0;
 }
 //  g++ -o bf BigFloat.cpp FFT.cpp && ./bf

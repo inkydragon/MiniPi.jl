@@ -404,6 +404,66 @@ function Base.div(x::MiniBf, y::MiniBf, p::UInt64)
 end
 
 """
+    invsqrt(x::UInt32, p::UInt64)
+
+Compute inverse square root using Newton's Method.
+
+```
+            (  r0^2 * x - 1  )
+  r1 = r0 - (----------------) * r0
+            (       2        )
+```
+
 Depend on: invsqrt, sub, mul
 """
-function invsqrt(x::MiniBf, y::UInt32, p) end
+function invsqrt(x::UInt32, p::UInt64)
+    if iszero(x)
+        throw(DomainError("Divide by Zero."))
+    end
+
+    # End of recursion. Generate starting point.
+    if iszero(p)
+        val = 1.0 / sqrt(Float64(x))
+
+        expo = 0
+
+        # Scale
+        while val < Float64(WORD_SIZE)
+            val *= Float64(WORD_SIZE)
+            expo -= 1
+        end
+
+        # Rebuild a BigFloat.
+        val64 = trunc(UInt64, val)
+
+        out = MiniBf()
+        out.sign = true
+        out.exp = expo
+        out.len = 2
+        out.tab = UInt32[val64 % WORD_SIZE, val64 ÷ WORD_SIZE]
+
+        return out
+    end
+
+    # Half the precision
+    s = div(p, 2) + UInt64(1)
+    if p == 1
+        s = UInt64(0)
+    elseif p == 2
+        s = UInt64(1)
+    end
+
+    # Recurse at half the precision
+    T = invsqrt(x, s)
+
+    temp = mul(T, T, p)             # r0^2
+    temp = mul(temp, x)             # r0^2 * x
+    temp = sub(temp, MiniBf(1), p)  # r0^2 * x - 1
+    HALF_WORD = UInt32(WORD_SIZE/2)
+    temp = mul(temp, HALF_WORD)     # (r0^2 * x - 1) / 2
+    temp.exp -= 1
+    temp = mul(temp, T, p)          # (r0^2 * x - 1) / 2 * r0
+    temp = sub(T, temp, p)          # r0 - (r0^2 * x - 1) / 2 * r0
+
+    return temp       
+end
