@@ -273,7 +273,7 @@ function mul(x::MiniBf, y::MiniBf, p=zero(UInt64))
     if AL > p
         chop = AL - p
         AL = p
-        Aexp += chop
+        Aexp += Int(chop)
         idx_A = chop
     end
 
@@ -281,7 +281,7 @@ function mul(x::MiniBf, y::MiniBf, p=zero(UInt64))
     if BL > p
         chop = BL - p
         BL = p
-        Bexp += chop
+        Bexp += Int(chop)
         idx_B = chop
     end
 
@@ -334,7 +334,7 @@ function rcp(x::MiniBf, p::UInt64)
         if AL > p
             chop = AL - p
             AL = p
-            Aexp += chop
+            Aexp += Int(chop)
             idx_x = chop
         end
 
