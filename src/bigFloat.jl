@@ -265,7 +265,7 @@ end
 
 Convert to string in scientific notation.
 """
-function to_string_sci!(u8::Vector{UInt8}, x::MiniBf, to_digits::Int64)
+function to_string_sci!(u8::Vector{UInt8}, x::MiniBf, to_digits=Int64(0))
     str_len = 0
 
     # Convert to string in scientific notation.
@@ -313,7 +313,7 @@ end
 
 Convert this number to a string. Auto-select format type.
 """
-function to_string(x::MiniBf, to_digits::Int64)
+function to_string(x::MiniBf, to_digits=Int64(0))
     if iszero(x.len)
         return "0."
     end
@@ -323,7 +323,7 @@ function to_string(x::MiniBf, to_digits::Int64)
     u8 = zeros(UInt8, to_digits)
     # Use scientific notation if out of range.
     if mag > 1 || mag < 0
-        return to_string_sci!(u8, x, to_digits)
+        return to_string_sci!(u8, x)
     end
 
     # Convert
