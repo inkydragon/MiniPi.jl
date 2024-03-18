@@ -439,7 +439,7 @@ const test_cpp_div_ref = String[
         @test "0.008849557522123893805309735" == to_string(r1, to_digits)
     end
 
-    to_digits = 40
+    to_digits = 60
     to_digits += 1
     p = (to_digits + 8) / 9
     p = trunc(UInt64, p)
@@ -448,11 +448,11 @@ const test_cpp_div_ref = String[
         to_string(rcp(MiniBf(113), UInt64(1)), to_digits)
     @test "0.008849557522123893805309734513274337" ==
         to_string(rcp(MiniBf(113), UInt64(2)), to_digits)
-    @test "0.0088495575221238938053097345132743362831858" ==
+    @test "0.008849557522123893805309734513274336283185841" ==
         to_string(rcp(MiniBf(113), UInt64(3)), to_digits)
-    @test "0.0088495575221238938053097345132743362831858" ==
+    @test "0.008849557522123893805309734513274336283185840707964601769911504" ==
         to_string(rcp(MiniBf(113), p), to_digits)
 
-    @test "3.1415929203539823008849557522123893805309" ==
+    @test "3.141592920353982300884955752212389380530973451327433628318584" ==
         to_string(div(MiniBf(355), MiniBf(113), p), to_digits)
 end

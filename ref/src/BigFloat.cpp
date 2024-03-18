@@ -634,7 +634,7 @@ BigFloat invsqrt(uint32_t x, size_t p){
 #include <iostream>
 int main() {
     Mini_Pi::BigFloat z, x, y;
-    size_t digits = 40;
+    size_t digits = 60;
     digits++;
     size_t p = (digits + 8) / 9;
     uint64_t word_max = 1000000000 - 1;
@@ -647,7 +647,9 @@ int main() {
     x = Mini_Pi::BigFloat(355, true);
     y = Mini_Pi::BigFloat(113, true);
     z = x.div(y, p);
-    printf("z.len=%ld;  \n", z.get_precision());
+
+    // z = y.rcp(p);
+
     std::cout << z.to_string(digits) << std::endl;
 
 #if 0
@@ -666,7 +668,7 @@ int main() {
     }
 #endif
 
-#if 1
+#if 0
     puts("mul(bf, bf)");
     for (int i=1; i<=23; i++) {
         digits = 0;
