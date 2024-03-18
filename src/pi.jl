@@ -41,3 +41,67 @@ function pi_bsr(a::UInt32, b::UInt32, p::UInt64)
 
     return P, Q, R
 end
+
+
+"""
+Compute Pi using the Chudnovsky Formula.
+"""
+function Pi(to_digits::Int64, write_to_file=false)
+    # The leading 3 doesn't count.
+    to_digits += 1
+
+    p = (to_digits + 8) / 9
+    p = trunc(UInt64, p)
+    terms = (p * 0.6346230241342037371474889163921741077188431452678) + 1
+    terms = trunc(UInt64, terms)
+
+    if terms > typemax(UInt32)
+        throw("Limit Exceeded")
+    end
+    terms = UInt32(terms)
+
+    ensure_fft_tables(2*p)
+
+    ns0 = time_ns()
+    @info "Computing Pi..."
+    @info "Algorithm: Chudnovsky Formula\n"
+
+    @info "Summing Series... $(Int(terms)) terms"
+    P, Q, R = MiniBf(), MiniBf(), MiniBf()
+    @time begin
+        P, Q, R = pi_bsr(UInt32(0), terms, p)
+        @info "P, Q, R"
+        to_string(P, to_digits) |> println
+        to_string(Q, to_digits) |> println
+        to_string(R, to_digits) |> println
+        P = add(mul(Q, UInt32(13591409)), P, p)
+        Q = mul(Q, UInt32(4270934400))
+    end
+
+    @info "Division..."
+    @time begin
+        P = div(Q, P, p)
+    end
+
+    @info "InvSqrt..."
+    @time begin
+        Q = invsqrt(UInt32(10005), p)
+    end
+
+    @info "Final Multiply..."
+    @time begin
+        P = mul(P, Q, p)
+    end
+    ns1 = time_ns()
+    
+    time_in_s = (ns1 - ns0) / 1e9
+    @info "Total Time = $time_in_s s"
+
+    if write_to_file
+        open("pi.txt", "w") do file
+            write(file, to_string(P, to_digits))
+        end
+    end
+
+    P
+end
