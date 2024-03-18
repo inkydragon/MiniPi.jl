@@ -14,6 +14,13 @@ function gen_dpt(to_digits)
 end
 
 @testset "pi_bsr" begin
+    # (1, 1, 1)
+    to_digits, p, terms = gen_dpt(0)
+    P, Q, R = pi_bsr(UInt32(0), terms, p)
+    @test_broken "-2.793657715 * 10^9" == to_string(P, to_digits)
+    @test_broken "1.0939058860032000 * 10^16" == to_string(P, to_digits)
+    test_to_string("5.", R, to_digits)
+
     to_digits, p, terms = gen_dpt(20)
     P, Q, R = pi_bsr(UInt32(0), terms, p)
 
