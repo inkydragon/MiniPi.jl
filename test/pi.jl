@@ -21,3 +21,10 @@ end
     @test_broken "9.57304069945956794936328192000000 * 10^32" == to_string(P, to_digits)
     test_to_string("1155.", R, to_digits)
 end
+
+@testset "Pi" begin
+    to_digits, p, terms = gen_dpt(20)
+    bf_pi = Pi(to_digits)
+
+    @test_broken "" == to_string(bf_pi, to_digits)
+end
