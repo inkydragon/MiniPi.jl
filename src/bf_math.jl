@@ -165,13 +165,13 @@ function usub(x::MiniBf, y::MiniBf, p=zero(UInt64))
     carry = 0
     c = one(UInt64)
     for bot in bot:(top-1)
-        word = word_at(x, bot) - word_at(y, bot) - carry
+        word = Int(word_at(x, bot)) - Int(word_at(y, bot)) - carry
         carry = 0
         if word < 0
-            word += WORD_SIZE
+            word += Int(WORD_SIZE)
             carry = 1
         end
-        z.tab[c] = word
+        z.tab[c] = trunc(UInt32, word)
         c += 1
     end
 

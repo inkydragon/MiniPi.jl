@@ -31,8 +31,8 @@ end
 
     to_digits, p, terms = gen_dpt(20)
     P, Q, R = pi_bsr(UInt32(0), terms, p)
-    @test_broken "-2.44479889433338740603253065 * 10^26" == to_string(P, to_digits)
-    @test_broken "9.57304069945956794936328192000000 * 10^32" == to_string(P, to_digits)
+    test_to_string("-2.44479889433338740603253065 * 10^26", P, to_digits)
+    test_to_string("9.57304069945956794936328192000000 * 10^32", Q, to_digits)
     test_to_string("1155.", R, to_digits)
 end
 
