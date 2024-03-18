@@ -14,9 +14,7 @@ function gen_dpt(to_digits)
 end
 
 @testset "pi_bsr" begin
-    # (1, 1, 1)
-    to_digits, p, terms = gen_dpt(0)
-    P, Q, R = pi_bsr(UInt32(0), terms, p)
+    P, Q, R = pi_bsr(UInt32(0), UInt32(1), UInt64(3))
     test_to_string("-2.793657715 * 10^9", P)
     test_to_string("1.0939058860032000 * 10^16", Q)
     test_to_string("5.", R)
@@ -25,6 +23,11 @@ end
     test_to_string("2.54994357387 * 10^11", P)
     test_to_string("8.7512470880256000 * 10^16", Q)
     test_to_string("231.", R)
+
+    P, Q, R = pi_bsr(UInt32(0), UInt32(2), UInt64(3))
+    test_to_string("-2.44479889433338740603253065 * 10^26", P)
+    test_to_string("9.57304069945956794936328192000000 * 10^32", Q)
+    test_to_string("1155.", R)
 
     to_digits, p, terms = gen_dpt(20)
     P, Q, R = pi_bsr(UInt32(0), terms, p)
