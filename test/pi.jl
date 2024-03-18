@@ -23,6 +23,8 @@ end
 end
 
 @testset "Pi" begin
+    @test_throws DomainError Pi(61*10^9)
+
     to_digits, p, terms = gen_dpt(20)
     bf_pi = Pi(to_digits)
 

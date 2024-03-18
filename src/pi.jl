@@ -56,7 +56,7 @@ function Pi(to_digits::Int64, write_to_file=false)
     terms = trunc(UInt64, terms)
 
     if terms > typemax(UInt32)
-        throw("Limit Exceeded")
+        throw(DomainError("Limit Exceeded"))
     end
     terms = UInt32(terms)
 
