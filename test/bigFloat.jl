@@ -19,6 +19,9 @@ end
     @test isnothing(MiniPi.check_word_size(0))
     @test isnothing(MiniPi.check_word_size(WORD_MAX))
     @test_throws DomainError MiniPi.check_word_size(WORD_SIZE)
+    
+    @test 0 == MiniPi._magnitude(MiniBf())
+    @test 1 == MiniPi._magnitude(MiniBf(42))
 end
 
 @testset "MiniBf" begin

@@ -103,6 +103,15 @@ function Base.exponent(x::MiniBf)
 end
 
 """
+    magnitude(x::MiniBf)
+
+Get magnitude.
+"""
+function _magnitude(x::MiniBf) :: Int
+    x.exp + Int(x.len)
+end
+
+"""
     word_at(x::MiniBf, mag::Int64)
 
 Returns the word at the mag'th digit place.
