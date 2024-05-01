@@ -2,7 +2,7 @@ import MiniPi
 import MiniPi:
     EXTRA_PRECISION, WORD_SIZE, WORD_MAX,
     MiniBf,
-    precision, exponent,
+    precision, exponent, word_at,
     ucmp,
     # String Conversion
     to_string_trimmed!, to_string_sci!, to_string,
@@ -91,6 +91,19 @@ end
     @test exponent(MiniBf(UInt32(1))) == 0
 end
 
+@testset "word_at" begin
+    bf0 = MiniBf()
+    @test 0 == word_at(bf0, -1)
+    @test 0 == word_at(bf0, 0)
+    @test 0 == word_at(bf0, 1)
+
+    bfx = MiniBf(47)
+    @test 0 == word_at(bfx, -1)
+    @test 47 == word_at(bfx, 0)
+    @test 0 == word_at(bfx, 1)
+
+    # TODO: test exp != 0;  len > 1
+end
 
 function ucmp_gt(x, y)
     @test 1 == ucmp(MiniBf(x), MiniBf(y))
