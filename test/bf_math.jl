@@ -66,6 +66,19 @@ const test_cpp_mul_u32_ref = [
     ("4.1999999916 * 10^10", "4.1999999874000000084 * 10^19"),
 ]
 
+function gen_word_u32(len::Int)
+    @assert len >= 4
+    rand_len = len - 4
+
+    UInt32[
+        0,
+        1,
+        rand(UInt32(2):UInt32(WORD_MAX-2), rand_len)...,
+        WORD_MAX-1,
+        WORD_MAX,
+    ]
+end
+
 @testset "mul(bf, u32)" begin
     # 0 * UInt32
     @test mul(zero(MiniBf), 0x0) == zero(MiniBf)
@@ -74,6 +87,13 @@ const test_cpp_mul_u32_ref = [
     # MiniBf * 0x0
     @test mul(MiniBf(1), zero(UInt32)) == zero(MiniBf)
     @test mul(MiniBf(42), zero(UInt32)) == zero(MiniBf)
+
+    for word32 in gen_word_u32(10)
+        # 1 * UInt32
+        @test mul(one(MiniBf), word32) == MiniBf(word32)
+        # MiniBf * 0x1
+        @test mul(MiniBf(word32), one(UInt32)) == MiniBf(word32)
+    end
 
     function test_commutative(x, y)
         @assert x >= 0
