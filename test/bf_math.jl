@@ -80,6 +80,7 @@ function gen_word_u32(len::Int)
 end
 
 @testset "mul(bf, u32)" begin
+    #= * 0 =#
     # 0 * UInt32
     @test mul(zero(MiniBf), 0x0) == zero(MiniBf)
     @test mul(zero(MiniBf), 0x1) == zero(MiniBf)
@@ -99,6 +100,20 @@ end
         # MiniBf * 0x1
         @test mul(MiniBf(word32), one(UInt32)) == MiniBf(word32)
     end
+
+    #= carry != 0 =#
+    HALF_WORD_SIZE = UInt32(WORD_SIZE/2)
+    # 2 * HALF_WORD_SIZE
+    bf_word_max = MiniBf(true, 0, 0x2, UInt32[0x0, 0x1])
+    @test bf_word_max == mul(MiniBf(2), HALF_WORD_SIZE)
+    @test bf_word_max == mul(MiniBf(HALF_WORD_SIZE), 0x2)
+    # WORD_MAX * WORD_MAX
+    word_max_2 = MiniBf(true, 0, 0x2, UInt32[0x1, 0x3b9ac9fe])
+    @test word_max_2 == mul(MiniBf(WORD_MAX), WORD_MAX)
+    # WORD_MAX * typemax(UInt32)
+    word_max_umax =  MiniBf(true, 0, 0x2, UInt32[0x2a05f201, 0xfffffffa])
+    @test word_max_umax == mul(MiniBf(WORD_MAX), typemax(UInt32))
+
 
     function test_commutative(x, y)
         @assert x >= 0
