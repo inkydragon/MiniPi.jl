@@ -1,3 +1,4 @@
+import MiniPi
 import MiniPi:
     EXTRA_PRECISION, WORD_SIZE, WORD_MAX,
     MiniBf,
@@ -12,6 +13,12 @@ import MiniPi:
     @test 2 == EXTRA_PRECISION
     @test 10^9 == WORD_SIZE
     @test WORD_SIZE == (WORD_MAX + 1)
+end
+
+@testset "help functions" begin
+    @test isnothing(MiniPi.check_word_size(0))
+    @test isnothing(MiniPi.check_word_size(WORD_MAX))
+    @test_throws DomainError MiniPi.check_word_size(WORD_SIZE)
 end
 
 @testset "MiniBf" begin
