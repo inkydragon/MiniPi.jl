@@ -68,12 +68,12 @@ const test_cpp_mul_u32_ref = [
 
 @testset "mul(bf, u32)" begin
     # 0 * UInt32
-    @test mul(MiniBf(0), 0x0) == MiniBf()
-    @test mul(MiniBf(0), 0x1) == MiniBf()
-    @test mul(MiniBf(0), rand(UInt32)) == MiniBf()
+    @test mul(zero(MiniBf), 0x0) == zero(MiniBf)
+    @test mul(zero(MiniBf), 0x1) == zero(MiniBf)
+    @test mul(zero(MiniBf), rand(UInt32)) == zero(MiniBf)
     # MiniBf * 0x0
-    @test mul(MiniBf(1), 0x0) == MiniBf()
-    @test mul(MiniBf(42), 0x0) == MiniBf()
+    @test mul(MiniBf(1), zero(UInt32)) == zero(MiniBf)
+    @test mul(MiniBf(42), zero(UInt32)) == zero(MiniBf)
 
     function test_commutative(x, y)
         @assert x >= 0
