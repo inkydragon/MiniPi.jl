@@ -65,8 +65,8 @@ Perform addition ignoring the sign of the two operands.
 """
 function uadd(x::MiniBf, y::MiniBf, p=zero(UInt64))
     # Magnitude
-    magA = x.exp + Int64(x.len)
-    magB = y.exp + Int64(y.len)
+    magA = _magnitude(x)
+    magB = _magnitude(y)
     top = max(magA, magB)
     bot = min(x.exp, y.exp)
 
@@ -131,8 +131,8 @@ function usub(x::MiniBf, y::MiniBf, p=zero(UInt64))
     # @assert x >= y
 
     # Magnitude
-    magA = x.exp + Int64(x.len)
-    magB = y.exp + Int64(y.len)
+    magA = _magnitude(x)
+    magB = _magnitude(y)
     top = max(magA, magB)
     bot = min(x.exp, y.exp)
 

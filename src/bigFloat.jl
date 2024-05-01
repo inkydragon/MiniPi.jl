@@ -169,9 +169,9 @@ Compare function that ignores the sign.
 This is needed to determine which direction subtractions will go.
 """
 function ucmp(x::MiniBf, y::MiniBf)
-    magA = x.exp + Int(x.len)
-    magB = y.exp + Int(y.len)
-    
+    magA = _magnitude(x)
+    magB = _magnitude(y)
+
     if magA > magB
         return 1
     elseif magA < magB
