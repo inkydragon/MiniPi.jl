@@ -56,6 +56,7 @@ MiniBf(bf::MiniBf) = bf
 Construct a BigFloat with a value of x and the specified sign.
 """
 function MiniBf(x::UInt32, sign=true)
+    # len = 1,                     vvv~~~~~~~~
     bf = MiniBf(true, zero(Int64), one(UInt64), UInt32[])
 
     if iszero(x)
