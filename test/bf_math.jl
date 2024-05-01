@@ -160,6 +160,20 @@ end
     @test uadd(MiniBf(0), MiniBf(0)) == MiniBf(0)
     @test uadd(MiniBf(1), MiniBf(0)) == MiniBf(1)
 
+    #= carry != 0 =#
+    # 1 + WORD_MAX
+    word_max_p1 = MiniBf(true, 0, 0x2, UInt32[0x0, 0x1])
+    @test word_max_p1 == uadd(MiniBf(WORD_MAX), MiniBf(1))
+    @test word_max_p1 == uadd(MiniBf(1), MiniBf(WORD_MAX))
+    # 0x42 + 1 + WORD_MAX
+    word_max_p0x43 = MiniBf(true, 0, 0x2, UInt32[0x42, 0x1])
+    @test word_max_p0x43 == uadd(MiniBf(WORD_MAX), MiniBf(1+0x42))
+    @test word_max_p0x43 == uadd(MiniBf(1+0x42), MiniBf(WORD_MAX))
+    # 2 * WORD_MAX
+    word_max_m2 = MiniBf(true, 0, 0x2, UInt32[0x3b9ac9fe, 0x1])
+    @test word_max_m2 == uadd(MiniBf(WORD_MAX), MiniBf(WORD_MAX))
+
+
     function test_uadd_commutative(i64_x, i64_y, p=zero(UInt64))
         @assert i64_x > 0 && i64_y > 0
         x = MiniBf(i64_x)
@@ -179,19 +193,6 @@ end
     end
     test_uadd_commutative(2, 0x3, UInt64(9))
     test_uadd_commutative(WORD_MAX, WORD_MAX)
-
-    #= carry != 0 =#
-    # 1 + WORD_MAX
-    word_max_p1 = MiniBf(true, 0, 0x2, UInt32[0x0, 0x1])
-    @test word_max_p1 == uadd(MiniBf(WORD_MAX), MiniBf(1))
-    @test word_max_p1 == uadd(MiniBf(1), MiniBf(WORD_MAX))
-    # 0x42 + 1 + WORD_MAX
-    word_max_p0x43 = MiniBf(true, 0, 0x2, UInt32[0x42, 0x1])
-    @test word_max_p0x43 == uadd(MiniBf(WORD_MAX), MiniBf(1+0x42))
-    @test word_max_p0x43 == uadd(MiniBf(1+0x42), MiniBf(WORD_MAX))
-    # 2 * WORD_MAX
-    word_max_m2 = MiniBf(true, 0, 0x2, UInt32[0x3b9ac9fe, 0x1])
-    @test word_max_m2 == uadd(MiniBf(WORD_MAX), MiniBf(WORD_MAX))
 
     test_x = Int64[
         1:10...,
