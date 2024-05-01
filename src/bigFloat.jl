@@ -107,8 +107,8 @@ end
 
 Get magnitude.
 """
-function _magnitude(x::MiniBf) :: Int
-    x.exp + Int(x.len)
+function _magnitude(x::MiniBf) :: Int64
+    x.exp + Int64(x.len)
 end
 
 """
