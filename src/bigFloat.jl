@@ -6,6 +6,13 @@ const WORD_SIZE = UInt32(1_000_000_000)
 "Word max"
 const WORD_MAX = UInt32(1_000_000_000 - 1)
 
+@enum BfCmp::Int begin
+    BF_SMALLER = -1
+    BF_EQUAL = 0
+    BF_LARGER = 1
+end
+
+
 function check_word_size(x)
     if x >= WORD_SIZE
         err_msg = "Only impl MiniBf() for x($x) < WORD_SIZE($WORD_SIZE)"
