@@ -1,5 +1,5 @@
 import MiniPi:
-    WORD_SIZE, WORD_MAX,
+    EXTRA_PRECISION, WORD_SIZE, WORD_MAX,
     MiniBf,
     precision, exponent,
     ucmp,
@@ -8,8 +8,10 @@ import MiniPi:
     negate!, mul
 
 
-@testset "bigFloat.jl" begin
-
+@testset "const" begin
+    @test 2 == EXTRA_PRECISION
+    @test 10^9 == WORD_SIZE
+    @test WORD_SIZE == (WORD_MAX + 1)
 end
 
 @testset "MiniBf" begin
