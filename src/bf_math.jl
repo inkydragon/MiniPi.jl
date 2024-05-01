@@ -229,7 +229,7 @@ function sub(x::MiniBf, y::MiniBf, p=zero(UInt64))
         # x > y
         usub(x, y, p)
     else
-        # y > x
+        # y >= x
         z = usub(y, x, p)
         negate!(z)
     end

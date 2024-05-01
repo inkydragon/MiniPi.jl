@@ -269,13 +269,17 @@ end
     @test sub(MiniBf(-1), MiniBf(1)) == MiniBf(-2)
     @test sub(MiniBf(-1), MiniBf(0)) == MiniBf(-1)
 
-    # x > y
+    # x > y:  x > y >= 0  || 0 > x > y
     @test sub(MiniBf(3), MiniBf(1)) == MiniBf(2)
+    @test sub(MiniBf(3), MiniBf(0)) == MiniBf(3)
     @test sub(MiniBf(-1), MiniBf(-3)) == MiniBf(2)
 
-    # x < y
+    # x <= y:  0 <= x <= y || x <= y < 0
     @test sub(MiniBf(1), MiniBf(3)) == MiniBf(-2)
-    @test sub(MiniBf(-1), MiniBf(1)) == MiniBf(-2)
+    @test sub(MiniBf(0), MiniBf(1)) == MiniBf(-1)
+    @test sub(MiniBf(0), MiniBf(0)) == MiniBf(0)
+    @test sub(MiniBf(-2), MiniBf(-1)) == MiniBf(-1)
+    @test sub(MiniBf(-1), MiniBf(-1)) == MiniBf(0)
 end
 
 const test_cpp_mul_ref = [
