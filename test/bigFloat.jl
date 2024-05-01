@@ -139,7 +139,7 @@ end
     end
 
     y = div(MiniBf(1), MiniBf(1_00_000_000), UInt64(0))
-    @test 1 == ucmp(MiniBf(1), MiniBf(y))
+    @test MiniPi.BF_LARGER == ucmp(MiniBf(1), MiniBf(y))
 
     # eq ==
     @test MiniPi.BF_EQUAL == ucmp(MiniBf(), MiniBf())
