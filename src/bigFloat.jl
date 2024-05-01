@@ -180,9 +180,9 @@ function ucmp(x::MiniBf, y::MiniBf)
     magB = _magnitude(y)
 
     if magA > magB
-        return 1
+        return BF_LARGER
     elseif magA < magB
-        return -1
+        return BF_SMALLER
     end
 
     mag = magA
@@ -190,15 +190,15 @@ function ucmp(x::MiniBf, y::MiniBf)
         wordA = word_at(x, mag)
         wordB = word_at(y, mag)
         if wordA < wordB
-            return -1
+            return BF_SMALLER
         elseif wordA > wordB
-            return 1
+            return BF_LARGER
         end
 
         mag -= 1
     end
     
-    return 0
+    return BF_EQUAL
 end
 
 
