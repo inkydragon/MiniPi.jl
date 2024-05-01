@@ -82,6 +82,10 @@ end
     @test MiniBf(-Int128(WORD_MAX)) == MiniBf(WORD_MAX, false)
     @test MiniBf(BigInt(WORD_MAX)) == MiniBf(WORD_MAX)
     @test MiniBf(-BigInt(WORD_MAX)) == MiniBf(WORD_MAX, false)
+    
+    # Base
+    @test MiniBf(0) == zero(MiniBf)
+    @test MiniBf(1) == one(MiniBf)
 end
 
 @testset "Base.precision" begin

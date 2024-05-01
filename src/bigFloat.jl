@@ -85,6 +85,10 @@ function MiniBf(x::Integer)
 end
 
 
+Base.zero(::Type{MiniBf}) = MiniBf()
+Base.one(::Type{MiniBf}) = MiniBf(1)
+
+
 #= Getter =#
 """
     Base.precision(x::MiniBf)
