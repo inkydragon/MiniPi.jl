@@ -246,15 +246,21 @@ end
 end
 
 @testset "add" begin
+    # Same sign. Add
     @test add(MiniBf(0), MiniBf(0)) == MiniBf(0)
     @test add(MiniBf(1), MiniBf(0)) == MiniBf(1)
     @test add(MiniBf(1), MiniBf(1)) == MiniBf(2)
+    @test add(MiniBf(-1), MiniBf(-1)) == MiniBf(-2)
 
+    # x >= 0 > y
+    @test add(MiniBf(0), MiniBf(-1)) == MiniBf(-1)
     @test add(MiniBf(1), MiniBf(-1)) == MiniBf(0)
     @test add(MiniBf(2), MiniBf(-1)) == MiniBf(1)
 
+    # x < 0 <= y
     @test add(MiniBf(-1), MiniBf(0)) == MiniBf(-1)
     @test add(MiniBf(-1), MiniBf(1)) == MiniBf(0)
+    @test add(MiniBf(-1), MiniBf(2)) == MiniBf(1)
 end
 
 @testset "sub" begin
