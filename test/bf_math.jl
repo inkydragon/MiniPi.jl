@@ -83,12 +83,17 @@ end
     # 0 * UInt32
     @test mul(zero(MiniBf), 0x0) == zero(MiniBf)
     @test mul(zero(MiniBf), 0x1) == zero(MiniBf)
-    @test mul(zero(MiniBf), rand(UInt32)) == zero(MiniBf)
+    @test mul(zero(MiniBf), 0x42) == zero(MiniBf)
+    @test mul(zero(MiniBf), WORD_MAX) == zero(MiniBf)
+    @test mul(zero(MiniBf), WORD_SIZE) == zero(MiniBf)
     # MiniBf * 0x0
-    @test mul(MiniBf(1), zero(UInt32)) == zero(MiniBf)
+    @test mul(MiniBf(0x1), zero(UInt32)) == zero(MiniBf)
     @test mul(MiniBf(42), zero(UInt32)) == zero(MiniBf)
-
     for word32 in gen_word_u32(10)
+        # 0 * UInt32
+        @test mul(zero(MiniBf), word32) == zero(MiniBf)
+        # MiniBf * 0x0
+        @test mul(MiniBf(word32), zero(UInt32)) == zero(MiniBf)
         # 1 * UInt32
         @test mul(one(MiniBf), word32) == MiniBf(word32)
         # MiniBf * 0x1
