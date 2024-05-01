@@ -109,29 +109,29 @@ end
 end
 
 function ucmp_gt(x, y)
-    @test 1 == ucmp(MiniBf(x), MiniBf(y))
-    @test 1 == ucmp(MiniBf(x), MiniBf(-y))
-    @test 1 == ucmp(MiniBf(-x), MiniBf(y))
-    @test 1 == ucmp(MiniBf(-x), MiniBf(-y))
+    @test MiniPi.BF_LARGER == ucmp(MiniBf(x), MiniBf(y))
+    @test MiniPi.BF_LARGER == ucmp(MiniBf(x), MiniBf(-y))
+    @test MiniPi.BF_LARGER == ucmp(MiniBf(-x), MiniBf(y))
+    @test MiniPi.BF_LARGER == ucmp(MiniBf(-x), MiniBf(-y))
 end
 
 function ucmp_eq(x, y)
-    @test 0 == ucmp(MiniBf(x), MiniBf(y))
-    @test 0 == ucmp(MiniBf(x), MiniBf(-y))
-    @test 0 == ucmp(MiniBf(-x), MiniBf(y))
-    @test 0 == ucmp(MiniBf(-x), MiniBf(-y))
+    @test MiniPi.BF_EQUAL == ucmp(MiniBf(x), MiniBf(y))
+    @test MiniPi.BF_EQUAL == ucmp(MiniBf(x), MiniBf(-y))
+    @test MiniPi.BF_EQUAL == ucmp(MiniBf(-x), MiniBf(y))
+    @test MiniPi.BF_EQUAL == ucmp(MiniBf(-x), MiniBf(-y))
 end
 
 function ucmp_lt(x, y)
-    @test -1 == ucmp(MiniBf(x), MiniBf(y))
-    @test -1 == ucmp(MiniBf(x), MiniBf(-y))
-    @test -1 == ucmp(MiniBf(-x), MiniBf(y))
-    @test -1 == ucmp(MiniBf(-x), MiniBf(-y))
+    @test MiniPi.BF_SMALLER == ucmp(MiniBf(x), MiniBf(y))
+    @test MiniPi.BF_SMALLER == ucmp(MiniBf(x), MiniBf(-y))
+    @test MiniPi.BF_SMALLER == ucmp(MiniBf(-x), MiniBf(y))
+    @test MiniPi.BF_SMALLER == ucmp(MiniBf(-x), MiniBf(-y))
 end
 
 @testset "ucmp" begin
     # gt >
-    @test 1 == ucmp(MiniBf(1), MiniBf(0))
+    @test MiniPi.BF_LARGER == ucmp(MiniBf(1), MiniBf(0))
     ucmp_gt(1, 0)
     for i in 1:10
         ucmp_gt(i, 0)
@@ -142,14 +142,14 @@ end
     @test 1 == ucmp(MiniBf(1), MiniBf(y))
 
     # eq ==
-    @test 0 == ucmp(MiniBf(), MiniBf())
-    @test 0 == ucmp(MiniBf(0), MiniBf())
-    @test 0 == ucmp(MiniBf(1), MiniBf(1))
+    @test MiniPi.BF_EQUAL == ucmp(MiniBf(), MiniBf())
+    @test MiniPi.BF_EQUAL == ucmp(MiniBf(0), MiniBf())
+    @test MiniPi.BF_EQUAL == ucmp(MiniBf(1), MiniBf(1))
     ucmp_eq(0, 0)
     ucmp_eq(1, 1)
 
     # lt <
-    @test -1 == ucmp(MiniBf(), MiniBf(1))
+    @test MiniPi.BF_SMALLER == ucmp(MiniBf(), MiniBf(1))
     ucmp_lt(0, 1)
 
     test_x = Int64[
