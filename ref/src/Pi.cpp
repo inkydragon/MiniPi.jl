@@ -105,7 +105,9 @@ void Pi(size_t digits){
 
     cout << "Total Time = " << time4 - time0 << endl << endl;
 
-    dump_to_file("pi.txt", P.to_string(digits));
+    auto pi_str = P.to_string(digits);
+    // cout << "Pi:\n" << pi_str << endl;
+    dump_to_file("pi.txt", pi_str);
 }
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
