@@ -358,19 +358,8 @@ function _rcp(x::MiniBf)
     return out
 end
 
-"""
-    rcp(x::MiniBf, p::UInt64)
-
-Compute reciprocal using Newton's Method.
-
-    r1 = r0 - (r0 * x - 1) * r0
-
-Depend on: rcp, sub, mul
-"""
-function rcp(x::MiniBf, p::UInt64)
-    if iszero(x.len)
-        throw(DomainError("Divide by Zero."))
-    end
+function _rcp_kernel_rec(x::MiniBf, p::UInt64)
+    @assert x.len > 0 "Divide by Zero."
 
     # End of recursion. Generate starting point.
     if iszero(p)
@@ -387,7 +376,7 @@ function rcp(x::MiniBf, p::UInt64)
     end
 
     # Recurse at half the precision
-    r0 = rcp(x, s)
+    r0 = _rcp_kernel_rec(x, s)
 
     # r1 = r0 - (r0 * x - 1) * r0
     r0x = mul(r0, x, p)
@@ -396,6 +385,23 @@ function rcp(x::MiniBf, p::UInt64)
     r1 = sub(r0, mulr0, p)
 
     return r1
+end
+
+"""
+    rcp(x::MiniBf, p::UInt64)
+
+Compute reciprocal using Newton's Method.
+
+    r1 = r0 - (r0 * x - 1) * r0
+
+Depend on: rcp, sub, mul
+"""
+function rcp(x::MiniBf, p::UInt64)
+    if iszero(x.len)
+        throw(DomainError("Divide by Zero."))
+    end
+
+    return _rcp_kernel_rec(x, p)
 end
 
 """
