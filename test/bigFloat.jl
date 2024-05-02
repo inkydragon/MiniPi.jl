@@ -2,6 +2,7 @@ import MiniPi
 import MiniPi:
     EXTRA_PRECISION, WORD_SIZE, WORD_MAX,
     MiniBf,
+    zero!,
     precision, exponent, word_at,
     ucmp,
     # String Conversion
@@ -86,6 +87,12 @@ end
     # Base
     @test MiniBf(0) == zero(MiniBf)
     @test MiniBf(1) == one(MiniBf)
+end
+
+@testset "MiniBf Setter" begin
+    bf1 = one(MiniBf)
+    zero!(bf1)
+    @test bf1 == zero(MiniBf)
 end
 
 @testset "Base.precision" begin

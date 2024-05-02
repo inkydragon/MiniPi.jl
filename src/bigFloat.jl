@@ -89,6 +89,18 @@ Base.zero(::Type{MiniBf}) = MiniBf()
 Base.one(::Type{MiniBf}) = MiniBf(1)
 
 
+#= Setters =#
+
+"""
+Set x to zero.
+"""
+function zero!(x::MiniBf)
+    x.sign = true
+    x.exp = 0
+    x.len = 0
+end
+
+
 #= Getter =#
 """
     Base.precision(x::MiniBf)
