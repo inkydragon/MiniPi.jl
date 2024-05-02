@@ -46,11 +46,9 @@ end
     test_to_string("3.904125225 * 10^9", R, to_digits)
 end
 
-const pi_50 = 
-    "3.14159265358979323846264338327950288419716939937510"
-const pi_100 = "3." *
-    "14159265358979323846264338327950288419716939937510" *
-    "58209749445923078164062862089986280348253421170679"
+
+# Pi Reference data
+include("pi_ref.jl")
 
 @testset "Pi" begin
     @test_throws DomainError Pi(61*10^9)
