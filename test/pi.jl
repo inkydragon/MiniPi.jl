@@ -46,12 +46,18 @@ end
     test_to_string("3.904125225 * 10^9", R, to_digits)
 end
 
-const pi_50 = "3.14159265358979323846264338327950288419716939937510"
+const pi_50 = 
+    "3.14159265358979323846264338327950288419716939937510"
+const pi_100 = "3." *
+    "14159265358979323846264338327950288419716939937510" *
+    "58209749445923078164062862089986280348253421170679"
 
 @testset "Pi" begin
     @test_throws DomainError Pi(61*10^9)
 
     to_digits, p, terms = gen_dpt(50)
-    bf_pi = Pi(to_digits)
-    @test pi_50 == to_string(bf_pi, to_digits)
+    @test pi_50 == to_string(Pi(to_digits), to_digits)
+
+    to_digits, p, terms = gen_dpt(100)
+    @test pi_100 == to_string(Pi(to_digits), to_digits)
 end
