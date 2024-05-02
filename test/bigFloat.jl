@@ -105,6 +105,13 @@ end
     @test exponent(MiniBf(UInt32(1))) == 0
 end
 
+@testset "MiniBf Getter" begin
+    # Base.sing
+    @test 0 == sign(zero(MiniBf))
+    @test 1 == sign(one(MiniBf))
+    @test -1 == sign(MiniBf(-1))
+end
+
 @testset "word_at" begin
     bf0 = MiniBf()
     @test 0 == word_at(bf0, -1)

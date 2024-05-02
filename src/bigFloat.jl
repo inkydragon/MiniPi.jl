@@ -134,6 +134,19 @@ function _magnitude(x::MiniBf) :: Int64
 end
 
 """
+Return x sign.
+"""
+function Base.sign(x::MiniBf)
+    if iszero(x.len)
+        0
+    elseif x.sign
+        1
+    else
+        -1
+    end
+end
+
+"""
     word_at(x::MiniBf, mag::Int64)
 
 Returns the word at the mag'th digit place.
