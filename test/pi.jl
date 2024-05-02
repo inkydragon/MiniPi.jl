@@ -53,5 +53,5 @@ const pi_50 = "3.14159265358979323846264338327950288419716939937510"
 
     to_digits, p, terms = gen_dpt(50)
     bf_pi = Pi(to_digits)
-    @test_broken pi_50 == to_string(bf_pi, to_digits)
+    @test pi_50 == to_string(bf_pi, to_digits)
 end
