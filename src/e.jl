@@ -22,6 +22,8 @@ function logf_approx(x::Float64)
     return (x + 0.5) * (log(x) - 1.0) + log2pi_p1d2
 end
 
+const LOG_WORD_SIZE = log(WORD_SIZE)
+
 """
 Returns the # of terms needed to reach a precision of `p`.
 
@@ -35,7 +37,7 @@ p = log(x!) / log(1_000_000_000)
 This function solves this equation via binary search.
 """
 function e_terms(p::UInt64)
-    sizeL = float(p) * 20.723265836946411156161923092159277868409913397659 + 1
+    sizeL = float(p) * LOG_WORD_SIZE + 1
     a = UInt64(0)
     b = UInt64(1)
 
