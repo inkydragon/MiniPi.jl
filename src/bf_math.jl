@@ -314,11 +314,10 @@ function _rcp(x::MiniBf)
     # Collect operand
     Aexp = x.exp
     AL = x.len
-    p = zero(UInt64)
 
     # Truncate precision to 3.
+    p = UInt64(3)
     idx_x = 0
-    p = 3
     if AL > p
         chop = AL - p
         AL = p
