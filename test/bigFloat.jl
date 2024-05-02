@@ -110,6 +110,10 @@ end
     @test 0 == sign(zero(MiniBf))
     @test 1 == sign(one(MiniBf))
     @test -1 == sign(MiniBf(-1))
+    
+    # Base.iszero
+    @test iszero(zero(MiniBf))
+    @test !iszero(one(MiniBf))
 end
 
 @testset "word_at" begin

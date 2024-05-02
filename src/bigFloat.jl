@@ -175,6 +175,13 @@ end
 
 #= Compare Ops =#
 
+"""
+If x is zero.
+"""
+function Base.iszero(x::MiniBf)
+    iszero(x.len)
+end
+
 function Base.:(==)(x::MiniBf, y::MiniBf)
     # TODO: use normalize
 
