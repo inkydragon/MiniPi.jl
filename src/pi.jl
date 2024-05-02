@@ -62,7 +62,7 @@ function Pi(to_digits::Int64, write_to_file=false)
     ensure_fft_tables(2*p)
 
     ns0 = time_ns()
-    @info "Computing Pi..."
+    @info "Computing Pi($(float(to_digits-1)) + 1) digits..."
     @info "Algorithm: Chudnovsky Formula\n"
 
     @info "Summing Series... $(Int(terms)) terms"
@@ -91,6 +91,7 @@ function Pi(to_digits::Int64, write_to_file=false)
     
     time_in_s = (ns1 - ns0) / 1e9
     @info "Total Time = $time_in_s s"
+    println("")  # add newline at end
 
     if write_to_file
         open("pi.txt", "w") do file
