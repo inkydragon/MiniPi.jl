@@ -65,6 +65,10 @@ include("pi_ref.jl")
     to_digits, p, terms = gen_dpt(1000)
     @test pi_1000 == to_string(Pi(to_digits), to_digits)
 
+    # Need ~0.6s
+    to_digits = Int(1e5+1)
+    @test pi_1e5_last100 == to_string(Pi(to_digits), to_digits)[end-99:end]
+
     # Need ~150s
     # to_digits, p, terms = gen_dpt(Int(1e7))
     # @test pi_1e7_last100 == to_string(Pi(to_digits), to_digits)[end-99:end]
