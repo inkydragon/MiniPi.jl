@@ -97,9 +97,9 @@ const pi_1e7_last100 =
     @test pi_100 == pi_str(100)
     @test pi_200 == pi_str(200)
     @test pi_1000 == pi_str(1000)
-    # Need ~0.6s
+    # 1e5:  0.6s
     @test pi_1e5_last100 == pi_str(1e5)[end-99:end]
-
-    # # Need ~150s
+    # 1e6:  11.3s
+    # 1e7:  147s
     # @test pi_1e7_last100 == pi_str(1e7)[end-99:end]
 end
