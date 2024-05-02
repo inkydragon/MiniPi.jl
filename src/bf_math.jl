@@ -310,6 +310,7 @@ end
 
 function _rcp(x::MiniBf)
     @assert x.len > 0 "Divide by Zero."
+    WORD_SIZE_F64 = Float64(WORD_SIZE)
 
     # Collect operand
     Aexp = x.exp
@@ -326,12 +327,12 @@ function _rcp(x::MiniBf)
     end
 
     # Convert number to floating-point.
-    val = x.tab[idx_x+1]
+    val = Float64(x.tab[idx_x+1])
     if AL >= 2
-        val += x.tab[idx_x+2] * WORD_SIZE
+        val += x.tab[idx_x+2] * WORD_SIZE_F64
     end
     if AL >= 3
-        val += x.tab[idx_x+3] * WORD_SIZE * WORD_SIZE
+        val += x.tab[idx_x+3] * WORD_SIZE_F64 * WORD_SIZE_F64
     end
 
     # Compute reciprocal.
@@ -339,8 +340,8 @@ function _rcp(x::MiniBf)
     Aexp = -Aexp
 
     # Scale
-    while val < WORD_SIZE
-        val *= WORD_SIZE
+    while val < WORD_SIZE_F64
+        val *= WORD_SIZE_F64
         Aexp -= 1
     end
 
