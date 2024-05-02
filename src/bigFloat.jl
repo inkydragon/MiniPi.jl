@@ -158,8 +158,6 @@ This function is mathematically equal to:
 ```
 (return value) = floor(this * (10^9)^-mag) % 10^9
 ```
-
-TODO: use getindex
 """
 function word_at(x::MiniBf, mag::Int64)
     @assert length(x.tab) >= x.len
@@ -170,6 +168,10 @@ function word_at(x::MiniBf, mag::Int64)
     end
 
     return x.tab[idx + 1]
+end
+
+function Base.getindex(x::MiniBf, mag::Int64)
+    word_at(x, mag)
 end
 
 

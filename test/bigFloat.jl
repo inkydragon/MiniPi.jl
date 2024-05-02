@@ -121,11 +121,13 @@ end
     @test 0 == word_at(bf0, -1)
     @test 0 == word_at(bf0, 0)
     @test 0 == word_at(bf0, 1)
+    @test 0 == bf0[0]
 
     bfx = MiniBf(47)
     @test 0 == word_at(bfx, -1)
     @test 47 == word_at(bfx, 0)
     @test 0 == word_at(bfx, 1)
+    @test 47 == bfx[0]
 
     # TODO: test exp != 0;  len > 1
 end
