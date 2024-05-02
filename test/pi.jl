@@ -61,4 +61,7 @@ include("pi_ref.jl")
 
     to_digits, p, terms = gen_dpt(200)
     @test pi_200 == to_string(Pi(to_digits), to_digits)
+
+    to_digits, p, terms = gen_dpt(1000)
+    @test pi_1000 == to_string(Pi(to_digits), to_digits)
 end
