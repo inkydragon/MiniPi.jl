@@ -53,6 +53,8 @@ function pi_bsr(a::UInt32, b::UInt32, p::UInt64)
 end
 
 
+const PI_TERM_RATIO = 0.6346230241342037371474889163921741077188431452678
+
 """
 Compute Pi using the Chudnovsky Formula.
 """
@@ -62,7 +64,7 @@ function Pi(to_digits::Int64, write_to_file=false)
 
     p = (to_digits + 8) / 9
     p = trunc(UInt64, p)
-    terms = (p * 0.6346230241342037371474889163921741077188431452678) + 1
+    terms = (p * PI_TERM_RATIO) + 1
     terms = trunc(UInt64, terms)
 
     if terms > typemax(UInt32)
