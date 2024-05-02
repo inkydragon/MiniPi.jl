@@ -418,6 +418,36 @@ const test_cpp_rcp_ref = String[
 
     @test rcp(MiniBf(1), zero(UInt64)) ==
         MiniBf(true, -1, 0x0000000000000002, UInt32[0x00000000, 0x00000001])
+    
+    @testset "rcp(MiniBf(113), UInt64(1))" begin
+        to_digits = 41
+        p = UInt64(1)
+        x = MiniBf(113)
+        r0 = rcp(MiniBf(113), zero(UInt64))
+        @test "0.008849557522123894" == to_string(r0, to_digits)
+        r0x = mul(r0, x, p)
+        @test "1.000000000000000022" == to_string(r0x, to_digits)
+        sub1 = sub(r0x, MiniBf(1), UInt64(1))
+        @test "2.2 * 10^-17" == to_string(sub1, to_digits)
+        mulr0 = mul(sub1, r0, p)
+        @test "1.94690265486725668 * 10^-19" == to_string(mulr0, to_digits)
+        r1 = sub(r0, mulr0, p)
+        @test "0.008849557522123893805309735" == to_string(r1, to_digits)
+    end
+
+    to_digits = 60
+    to_digits += 1
+    p = (to_digits + 8) / 9
+    p = trunc(UInt64, p)
+
+    @test "0.008849557522123893805309735" ==
+        to_string(rcp(MiniBf(113), UInt64(1)), to_digits)
+    @test "0.008849557522123893805309734513274337" ==
+        to_string(rcp(MiniBf(113), UInt64(2)), to_digits)
+    @test "0.008849557522123893805309734513274336283185841" ==
+        to_string(rcp(MiniBf(113), UInt64(3)), to_digits)
+    @test "0.008849557522123893805309734513274336283185840707964601769911504" ==
+        to_string(rcp(MiniBf(113), p), to_digits)
 
     for (i, val) in enumerate(test_cpp_rcp_ref)
         test_to_string(val, rcp(MiniBf(i), zero(UInt64)))
@@ -493,35 +523,10 @@ const test_cpp_div_ref = String[
         test_to_string(val[1:11+2], div(MiniBf(i), MiniBf(i+1), zero(UInt64)), 11)
     end
 
-    @testset "rcp(MiniBf(113), UInt64(1))" begin
-        to_digits = 41
-        p = UInt64(1)
-        x = MiniBf(113)
-        r0 = rcp(MiniBf(113), zero(UInt64))
-        @test "0.008849557522123894" == to_string(r0, to_digits)
-        r0x = mul(r0, x, p)
-        @test "1.000000000000000022" == to_string(r0x, to_digits)
-        sub1 = sub(r0x, MiniBf(1), UInt64(1))
-        @test "2.2 * 10^-17" == to_string(sub1, to_digits)
-        mulr0 = mul(sub1, r0, p)
-        @test "1.94690265486725668 * 10^-19" == to_string(mulr0, to_digits)
-        r1 = sub(r0, mulr0, p)
-        @test "0.008849557522123893805309735" == to_string(r1, to_digits)
-    end
-
     to_digits = 60
     to_digits += 1
     p = (to_digits + 8) / 9
     p = trunc(UInt64, p)
-
-    @test "0.008849557522123893805309735" ==
-        to_string(rcp(MiniBf(113), UInt64(1)), to_digits)
-    @test "0.008849557522123893805309734513274337" ==
-        to_string(rcp(MiniBf(113), UInt64(2)), to_digits)
-    @test "0.008849557522123893805309734513274336283185841" ==
-        to_string(rcp(MiniBf(113), UInt64(3)), to_digits)
-    @test "0.008849557522123893805309734513274336283185840707964601769911504" ==
-        to_string(rcp(MiniBf(113), p), to_digits)
 
     @test "3.141592920353982300884955752212389380530973451327433628318584" ==
         to_string(div(MiniBf(355), MiniBf(113), p), to_digits)
