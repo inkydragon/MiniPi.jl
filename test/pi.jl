@@ -52,24 +52,18 @@ include("pi_ref.jl")
 
 @testset "Pi" begin
     @test_throws DomainError Pi(61*10^9)
+    
+    function pi_str(digits)
+        to_digits = Int64(digits)
+        to_string(Pi(to_digits), to_digits+1)
+    end
 
-    to_digits, p, terms = gen_dpt(50)
-    @test pi_50 == to_string(Pi(to_digits), to_digits)
-
-    to_digits, p, terms = gen_dpt(100)
-    @test pi_100 == to_string(Pi(to_digits), to_digits)
-
-    to_digits, p, terms = gen_dpt(200)
-    @test pi_200 == to_string(Pi(to_digits), to_digits)
-
-    to_digits, p, terms = gen_dpt(1000)
-    @test pi_1000 == to_string(Pi(to_digits), to_digits)
-
+    @test pi_50 == pi_str(50)
+    @test pi_100 == pi_str(100)
+    @test pi_200 == pi_str(200)
+    @test pi_1000 == pi_str(1000)
     # Need ~0.6s
-    to_digits = Int(1e5+1)
-    @test pi_1e5_last100 == to_string(Pi(to_digits), to_digits)[end-99:end]
-
-    # Need ~150s
-    # to_digits, p, terms = gen_dpt(Int(1e7))
-    # @test pi_1e7_last100 == to_string(Pi(to_digits), to_digits)[end-99:end]
+    @test pi_1e5_last100 == pi_str(1e5)[end-99:end]
+    # # Need ~150s
+    # @test pi_1e7_last100 == pi_str(1e7)[end-99:end]
 end
