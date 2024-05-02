@@ -7,5 +7,6 @@ include("bigFloat.jl")
 include("bf_math.jl")
 
 include("pi.jl")
+include("e.jl")
 
 end
