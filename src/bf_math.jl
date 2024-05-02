@@ -308,6 +308,56 @@ function mul(x::MiniBf, y::MiniBf, p=zero(UInt64))
     z
 end
 
+function _rcp(x::MiniBf)
+    @assert x.len > 0 "Divide by Zero."
+
+    # Collect operand
+    Aexp = x.exp
+    AL = x.len
+    p = zero(UInt64)
+
+    # Truncate precision to 3.
+    idx_x = 0
+    p = 3
+    if AL > p
+        chop = AL - p
+        AL = p
+        Aexp += Int(chop)
+        idx_x = chop
+    end
+
+    # Convert number to floating-point.
+    val = x.tab[idx_x+1]
+    if AL >= 2
+        val += x.tab[idx_x+2] * WORD_SIZE
+    end
+    if AL >= 3
+        val += x.tab[idx_x+3] * WORD_SIZE * WORD_SIZE
+    end
+
+    # Compute reciprocal.
+    val = 1.0 / val
+    Aexp = -Aexp
+
+    # Scale
+    while val < WORD_SIZE
+        val *= WORD_SIZE
+        Aexp -= 1
+    end
+
+    # Rebuild a MiniBf.
+    val64 = trunc(UInt64, val)
+
+    out = MiniBf()
+    out.sign = x.sign
+
+    out.tab = UInt32[val64 % WORD_SIZE, val64 ÷ WORD_SIZE]
+    out.len = 2
+    out.exp = Aexp
+
+    return out
+end
+
 """
     rcp(x::MiniBf, p::UInt64)
 
@@ -322,52 +372,9 @@ function rcp(x::MiniBf, p::UInt64)
         throw(DomainError("Divide by Zero."))
     end
 
-    # Collect operand
-    Aexp = x.exp
-    AL = x.len
-
     # End of recursion. Generate starting point.
     if iszero(p)
-        # Truncate precision to 3.
-        idx_x = 0
-        p = 3
-        if AL > p
-            chop = AL - p
-            AL = p
-            Aexp += Int(chop)
-            idx_x = chop
-        end
-
-        # Convert number to floating-point.
-        val = x.tab[idx_x+1]
-        if AL >= 2
-            val += x.tab[idx_x+2] * WORD_SIZE
-        end
-        if AL >= 3
-            val += x.tab[idx_x+3] * WORD_SIZE * WORD_SIZE
-        end
-
-        # Compute reciprocal.
-        val = 1.0 / val
-        Aexp = -Aexp
-
-        # Scale
-        while val < WORD_SIZE
-            val *= WORD_SIZE
-            Aexp -= 1
-        end
-
-        # Rebuild a MiniBf.
-        val64 = trunc(UInt64, val)
-
-        out = MiniBf()
-        out.sign = x.sign
-
-        out.tab = UInt32[val64 % WORD_SIZE, val64 ÷ WORD_SIZE]
-        out.len = 2
-        out.exp = Aexp
-
-        return out
+        return _rcp(x)
     end
 
     # Half the precision
