@@ -1,9 +1,11 @@
 import MiniPi:
     WORD_MAX,
+    ensure_fft_tables, multiply_fft!
+import MiniPi.FFT: 
     bit_reverse_indices,
     fft_forward!, fft_inverse!, fft_pointwise!,
     word_to_fft!, fft_to_word!,
-    ensure_fft_tables, minimum_fft_size, multiply_fft!
+    minimum_fft_size
 
 
 @testset "bit_reverse_indices" begin

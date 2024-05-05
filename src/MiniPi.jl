@@ -1,7 +1,7 @@
 module MiniPi
 
 include("fft.jl")
-include("fft_basic.jl")
+using .FFT
 
 include("bigFloat.jl")
 include("bf_string.jl")

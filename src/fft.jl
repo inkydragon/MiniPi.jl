@@ -1,3 +1,7 @@
+module FFT
+
+export ensure_fft_tables, multiply_fft!
+
 
 function bit_reverse_indices(N::Integer)
     base = 2
@@ -17,6 +21,7 @@ function bit_reverse_indices(N::Integer)
 end
 
 
+#= interface =#
 """
 Ensure that the pre-computed twiddle factor table is large enough to handle
 a product size of CL.
@@ -39,3 +44,9 @@ Multiply A by B and store into C.
 - `A`, `B`, and `C` point the start of a little-endian array big integer.
 """
 function multiply_fft! end
+
+
+#= impl =#
+include("fft_basic.jl")
+
+end # FFT
