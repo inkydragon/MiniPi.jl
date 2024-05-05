@@ -5,9 +5,7 @@ import MiniPi:
     zero!,
     precision, exponent, word_at,
     ucmp,
-    # String Conversion
-    to_string_trimmed!, to_string_sci!, to_string,
-    negate!, mul
+    mul
 
 
 @testset "const" begin

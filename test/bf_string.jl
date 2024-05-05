@@ -1,4 +1,7 @@
 #= String Conversion =#
+import MiniPi: to_string_trimmed!, to_string_sci!, to_string,
+    negate!
+
 
 @testset "to_string_trimmed!" begin
     function test_to_string_trimmed(x, to_digits=0)
