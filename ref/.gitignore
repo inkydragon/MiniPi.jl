@@ -1,8 +1,6 @@
 *.txt
 !LICENSE.txt
 
-/mini-pi
-/mini-pi_*
 !*.cpp
 
 fft
