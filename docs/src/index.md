@@ -1,7 +1,3 @@
-```@meta
-CurrentModule = MiniPi
-```
-
 # MiniPi
 
 Documentation for [MiniPi](https://github.com/inkydragon/MiniPi.jl).
@@ -17,5 +13,5 @@ Documentation for [MiniPi](https://github.com/inkydragon/MiniPi.jl).
 ## function docs
 
 ```@autodocs
-Modules = [MiniPi]
+Modules = [MiniPi, MiniPi.FFT]
 ```
