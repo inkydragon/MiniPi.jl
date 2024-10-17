@@ -5,7 +5,7 @@ DocMeta.setdocmeta!(MiniPi, :DocTestSetup, :(using MiniPi); recursive=true)
 
 makedocs(;
     modules=[MiniPi],
-    authors="Chengyu HAN <git@wo-class.cn> and contributors",
+    authors="Chengyu HAN <cyhan.dev@outlook.com> and contributors",
     sitename="MiniPi.jl",
     format=Documenter.HTML(;
         canonical="https://inkydragon.github.io/MiniPi.jl",
