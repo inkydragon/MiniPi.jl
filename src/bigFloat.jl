@@ -1,3 +1,6 @@
+# SPDX-License-Identifier: MIT
+# Based on Mysticial/Mini-Pi/decomposed/src/BigFloat.cpp
+#   Author: Alexander J. Yee, CC0-1.0 License
 
 "Precision increase step."
 const EXTRA_PRECISION = UInt64(2)

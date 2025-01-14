@@ -1,3 +1,6 @@
+# SPDX-License-Identifier: MIT
+# Based on Mysticial/Mini-Pi/decomposed/src/Pi.cpp
+#   Author: Alexander J. Yee, CC0-1.0 License
 
 function _pi_bsr_end(b::UInt32, p::UInt64)
     # P = (13591409 + 545140134*b)(2b-1)(6b-5)(6b-1) (-1)^b

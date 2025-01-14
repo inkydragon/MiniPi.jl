@@ -1,3 +1,6 @@
+# SPDX-License-Identifier: MIT
+# Based on Mysticial/Mini-Pi/decomposed/src/FFT_Basic.ipp
+#   Author: Alexander J. Yee, CC0-1.0 License
 """
 A basic FFT multiply implementation. No optimizations are done.
 """

@@ -1,3 +1,6 @@
+# SPDX-License-Identifier: MIT
+# Based on Mysticial/Mini-Pi/decomposed/src/e.cpp
+#   Author: Alexander J. Yee, CC0-1.0 License
 
 """(log(2*pi) + 1) / 2"""
 const log2pi_p1d2 = Float64((log(2*BigFloat(pi)) + 1) / 2)
