@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: MIT
 #= String Conversion =#
 import MiniPi: to_string_trimmed!, to_string_sci!, to_string,
     negate!

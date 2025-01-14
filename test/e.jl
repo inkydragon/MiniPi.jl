@@ -1,5 +1,5 @@
+# SPDX-License-Identifier: MIT
 import MiniPi: Exp
-
 
 
 #= Pi Reference data =#

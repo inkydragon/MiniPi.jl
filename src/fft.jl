@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: MIT
 module FFT
 
 export ensure_fft_tables, multiply_fft!
