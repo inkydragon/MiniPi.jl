@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: MIT
 import MiniPi
 import MiniPi:
     EXTRA_PRECISION, WORD_SIZE, WORD_MAX,

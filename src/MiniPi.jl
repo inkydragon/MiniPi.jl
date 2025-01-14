@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: MIT
 module MiniPi
 
 include("fft.jl")

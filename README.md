@@ -20,3 +20,13 @@ julia --project=test
 using Pkg; using LocalCoverage;
 Pkg.add(url=".");  html_coverage(generate_coverage("MiniPi"; run_test=true); dir = "../cov")
 ```
+
+
+## License
+
+```c
+// SPDX-License-Identifier: MIT
+```
+
+> The original [Mysticial/Mini-Pi](https://github.com/Mysticial/Mini-Pi)
+> was written in C++ under the CC0-1.0 licence.

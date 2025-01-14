@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: MIT
 import MiniPi:
     WORD_MAX,
     ensure_fft_tables, multiply_fft!

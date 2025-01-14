@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: MIT
 import MiniPi.MiniBf
 import MiniPi:
     WORD_SIZE, WORD_MAX,
